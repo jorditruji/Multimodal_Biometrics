@@ -33,24 +33,35 @@ def path_img2wav(path):
 	.replace('cropped_face_frame', path.split('/')[7].replace('_cropped_frames', '') + '_preprocessed_frame')
 
 
+def filter_dataset_by_classes(data, labels, min_samples=10):
+	'''Returns the dataset only with the classes that have at least min_samples'''
+	classes=[]
+	count=[]
+	data=np.array(data)
+	labels=np.array(labels)
+	for classe in np.unique(labels):
+		classes.append(classe)
+		count.append(len(labels[np.where(labels==classe)]))
+	classes=np.array(classes)
+	count=np.array(count)
+	interesting_classes=classes[count>=min_samples]
+	print(len(interesting_classes))
+	reduced_labels=[]
+	reduced_data=[]
+	for interest in interesting_classes:
+		data_to_append=data[labels==interest]
+		for i,sample in enumerate(data_to_append):
+			if i<min_samples:
+				reduced_data.append(sample)
 
+		data_to_append=labels[labels==interest]
+		for i,sample in enumerate(data_to_append):
+			if i<min_samples:
+				reduced_labels.append(sample)
+	return reduced_data, reduced_labels
 
 
 data,labels=read_pkl('faces2.pkl')
-x_train, y_train, x_val, y_val=split_dataset(data,labels)
-
-print("{} train samples \n {} val samples \n {} test samples".format(len(x_train), len(x_val), 0))
-y_train=np.array(y_train)
-y_val=np.array(y_val)
-classes=[]
-count=[]
-
-for classe in np.unique(y_train):
-	print(y_val[y_val==classe])
-	classes.append(classe)
-	count.append(2*len(y_val[np.where(y_val==classe)]))
-	print("{} samples for class {}".format(len(y_val[np.where(y_val==classe)]),classe))
-
-ind = np.arange(len(classes)) 
-plt.bar(ind, count)
-plt.show()
+print(len(labels))
+data,labels=filter_dataset_by_classes(data,labels, min_samples=1)
+print(len(labels))
