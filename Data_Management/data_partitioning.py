@@ -33,7 +33,7 @@ def path_img2wav(path):
 	.replace('cropped_face_frame', path.split('/')[7].replace('_cropped_frames', '') + '_preprocessed_frame')
 
 
-def filter_dataset_by_classes(data, labels, min_samples=10):
+def filter_dataset_by_classes(data, labels, min_samples=10, limit=False):
 	'''Returns the dataset only with the classes that have at least min_samples'''
 	classes=[]
 	count=[]
@@ -51,12 +51,18 @@ def filter_dataset_by_classes(data, labels, min_samples=10):
 	for interest in interesting_classes:
 		data_to_append=data[labels==interest]
 		for i,sample in enumerate(data_to_append):
-			if i<min_samples:
+			if limit:
+				if i<min_samples:
+					reduced_data.append(sample)
+			else:
 				reduced_data.append(sample)
 
 		data_to_append=labels[labels==interest]
 		for i,sample in enumerate(data_to_append):
-			if i<min_samples:
+			if limit:
+				if i<min_samples:
+					reduced_labels.append(sample)
+			else:
 				reduced_labels.append(sample)
 	return reduced_data, reduced_labels
 
