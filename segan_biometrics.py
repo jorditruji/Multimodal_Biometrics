@@ -14,7 +14,7 @@ params = {'batch_size': 64,
 max_epochs = 100
 
 
-data,labels=load_partitions()
+partition,labels=load_partitions()
 print (labels.keys())
 
 
