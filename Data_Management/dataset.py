@@ -36,7 +36,6 @@ class Dataset(data.Dataset):
         try:
             ID = self.list_IDs[index]
             y=self.labels[ID]
-            print(ID)
             ID=path_img2wav(ID)
             ID=ID.replace('\n','')
         except:
@@ -46,6 +45,8 @@ class Dataset(data.Dataset):
         if fm != 16000:
             raise ValueError('Sampling rate is expected to be 16kHz!')
         
+        print "wav_shape:"
+        print wav_data.shape
         # Some preprocessing
         if self.preprocessing:
             wav_data = self.abs_normalize_wave_minmax(wav_data)
