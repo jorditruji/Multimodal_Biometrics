@@ -45,7 +45,8 @@ class MiniConvNet(nn.Module):
 		torch.nn.Softmax())
 
 	def forward(self, x):
-		print x.shape
+		print x.shapeTry
+		x.unsqueeze_(1)
 		out = self.layer1(x)
 		print out.shape
 		out = self.layer2(out)
