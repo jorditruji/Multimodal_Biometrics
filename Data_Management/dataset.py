@@ -54,7 +54,7 @@ class Dataset(data.Dataset):
             #MFCC extraction
         if self.mfcc:
             mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
-            return mfcc_matric
+            return mfcc_matric,y
 
         return wav_data, y
 
