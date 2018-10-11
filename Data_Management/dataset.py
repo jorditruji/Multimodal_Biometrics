@@ -2,12 +2,12 @@ import torch
 from torch.utils import data
 
 
-class Dataset(data.Dataset): """
-        Class Dataset:
-            - Parameters:
-            list_IDs: Vector of image paths
-            labels: Dict containing the label for each image path
-
+class Dataset(data.Dataset):
+    """
+    Class Dataset:
+    - Parameters:
+        list_IDs: Vector of image paths
+        labels: Dict containing the label for each image path
     """
     def __init__(self, list_IDs, labels):
         self.labels = labels
