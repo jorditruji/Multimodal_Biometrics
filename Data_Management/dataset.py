@@ -66,8 +66,11 @@ class Dataset(data.Dataset):
         '''normalize'''
         x = wavdata.astype(np.int32)
         imax = np.max(np.abs(x))
-        x_n = x / imax
-        return x_n
+        try:
+            x_n = x / imax
+            return x_n
+        except:
+            return
 
     def pre_emphasize(self, x, coef=0.95):
         '''x_emphazied[n]=x[n]- coef*x[n-1]'''
