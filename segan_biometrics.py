@@ -50,11 +50,8 @@ class MiniConvNet(nn.Module):
 		out = self.layer2(out)
 		out = self.layer3(out)
 		out = self.layer4(out)
-		print out.shape
 		out = out.reshape(out.size(0), -1)
-		print out.shape
 		out = self.fc(out)
-		print out
 		return out
 
 
@@ -84,7 +81,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		model.train()  # Set model to training mode
 		# Training
 		dataseize=0
-		print training_generator
 		for local_batch, local_labels in training_generator:
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
@@ -180,7 +176,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 model = MiniConvNet(num_classes=27).to(device)
 print (model)
-print(get_n_params(model))
+
 model_ft = model.to(device)
 
 criterion = nn.CrossEntropyLoss()

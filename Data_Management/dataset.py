@@ -67,7 +67,8 @@ class Dataset(data.Dataset):
         '''normalize'''
         x = wavdata.astype(np.int32)
         imax = np.max(np.abs(x))
-        print imax,name
+        if imax==0:
+            print imax,name
         try:
             x_n = x / imax
             return x_n
