@@ -6,6 +6,7 @@ import random
 import unicodedata
 from data_utils import path_img2wav
 import numpy as np
+import librosa
 
 printable=set(string.printable)
 
@@ -21,7 +22,8 @@ class Dataset(data.Dataset):
     def __init__(self, list_IDs, labels):
         self.labels = labels
         self.list_IDs = list_IDs
-
+        self.mfcc = True
+        self.preprocessing=False
 
     def __len__(self):
         '''Denotes the total number of samples'''
@@ -31,23 +33,26 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         'Generates one sample of data'
         # Select sample
-	try:
+        try:
             ID = self.list_IDs[index]
-	    y=self.labels[ID]
-	    print(ID)
-	    ID=path_img2wav(ID)
-	    ID=ID.replace('\n','')
+            y=self.labels[ID]
+            print(ID)
+            ID=path_img2wav(ID)
+            ID=ID.replace('\n','')
         except:
-	   print("errors")
-	# Load data and get l
-
-	fm, wav_data = wavfile.read(str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav')))
+            print("errors")
+        # Load data and get l
+        fm, wav_data = wavfile.read(str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav')))
         if fm != 16000:
             raise ValueError('Sampling rate is expected to be 16kHz!')
         
         # Some preprocessing
-        wav_data = self.abs_normalize_wave_minmax(wav_data)
-        wav_data = self.pre_emphasize(wav_data)
+        if self.preprocessing:
+            wav_data = self.abs_normalize_wave_minmax(wav_data)
+            wav_data = self.pre_emphasize(wav_data)
+        if self.mfcc:
+            mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=16)
+            return mfcc_matric
 
 
         return wav_data, y

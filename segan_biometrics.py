@@ -31,5 +31,7 @@ for epoch in range(max_epochs):
     for local_batch, local_labels in training_generator:
         # Transfer to GPU
         local_batch, local_labels = local_batch.to(device), local_labels.to(device)
+        for sample in local_batch:
+        	print local_batch.shape
 
         # Model computations
