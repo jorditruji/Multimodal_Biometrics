@@ -15,7 +15,6 @@ max_epochs = 100
 
 
 partition,labels=load_partitions()
-print (labels,partition)
 
 
 # Generators
