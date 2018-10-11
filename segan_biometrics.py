@@ -1,8 +1,7 @@
+
+from Data_Management.data_utils import load_partitions
 import torch
 from torch.utils import data
-from Data_Management.data_utils import load_partitions
-from my_classes import Dataset
-
 
 # CUDA for PyTorch
 use_cuda = torch.cuda.is_available()
