@@ -77,7 +77,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 	best_acc = 0.0
 
 	model = model.to(device)
-	print(model.weight.type())
 	max_epochs=50
 	#Loop over epochs
 	for epoch in range(max_epochs):
