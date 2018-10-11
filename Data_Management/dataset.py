@@ -49,7 +49,8 @@ class Dataset(data.Dataset):
 
         # Some preprocessing
         #if self.preprocessing:
-        wav_data = self.abs_normalize_wave_minmax(wav_data)
+        name=str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
+        wav_data = self.abs_normalize_wave_minmax(wav_data,name)
         wav_data = self.pre_emphasize(wav_data)
             #MFCC extraction
         if self.mfcc:
@@ -62,11 +63,11 @@ class Dataset(data.Dataset):
         return wav_data, y
 
 
-    def abs_normalize_wave_minmax(self, wavdata):
+    def abs_normalize_wave_minmax(self, wavdata,name):
         '''normalize'''
         x = wavdata.astype(np.int32)
         imax = np.max(np.abs(x))
-        print imax
+        print imax,name
         try:
             x_n = x / imax
             return x_n
