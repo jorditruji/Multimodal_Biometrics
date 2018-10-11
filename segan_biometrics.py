@@ -41,7 +41,7 @@ class MiniConvNet(nn.Module):
 			nn.ReLU(),
 			nn.Dropout(),
 			nn.Linear(512,num_classes),
-			torch.nn.Softmax(dim=num_classes))
+			torch.nn.Softmax())
 
 	def forward(self, x):
 		x=x.unsqueeze_(1)
