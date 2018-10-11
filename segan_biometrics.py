@@ -50,6 +50,7 @@ class MiniConvNet(nn.Module):
 		out = self.layer2(out)
 		out = self.layer3(out)
 		out = self.layer4(out)
+		print out.shape
 		out = out.reshape(out.size(0), -1)
 		print out.shape
 		out = self.fc(out)
