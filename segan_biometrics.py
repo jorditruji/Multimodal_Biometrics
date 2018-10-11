@@ -51,6 +51,16 @@ class MiniConvNet(nn.Module):
 		return out
 
 
+# Get model nu,ber of params
+def get_n_params(model):
+    pp=0
+    for p in list(model.parameters()):
+        nn=1
+        for s in list(p.size()):
+            nn = nn*s
+        pp += nn
+return pp
+
 def train_model(model, criterion, optimizer,scheduler,train_gen, val_gen, num_epochs=25):
 	since = time.time()
 	best_model_wts = copy.deepcopy(model.state_dict())
