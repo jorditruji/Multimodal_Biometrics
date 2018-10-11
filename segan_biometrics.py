@@ -69,6 +69,7 @@ def get_n_params(model):
         for s in list(p.size()):
             nn = nn*s
         pp += nn
+    print "Parametros: {}".format(str(pp))   
 	return pp
 
 def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
