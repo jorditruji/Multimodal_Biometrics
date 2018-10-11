@@ -76,7 +76,7 @@ def save_partition(data,labels,name):
 
 def load_partitions():
 	#Loaddddddd
-	return np.load(partition), np.load(labels)
+	return np.load('partition.npy'), np.load('labels.npy')
 
 '''
 data,labels=read_pkl('faces2.pkl')
