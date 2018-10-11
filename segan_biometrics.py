@@ -7,6 +7,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 import time
+import copy
+
 
 # Convolutional neural network (4 convolutional layers)
 class MiniConvNet(nn.Module):
