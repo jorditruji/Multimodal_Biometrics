@@ -2,7 +2,7 @@
 from Data_Management.data_utils import load_partitions
 import torch
 from torch.utils import data
-
+from Data_Management.dataset import Dataset
 # CUDA for PyTorch
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
@@ -15,7 +15,7 @@ max_epochs = 100
 
 
 partition,labels=load_partitions()
-print (labels.keys())
+print (labels,partition)
 
 
 # Generators
