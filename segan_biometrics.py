@@ -46,7 +46,8 @@ class MiniConvNet(nn.Module):
 
 	def forward(self, x):
 		print x.shape
-		x.unsqueeze_(1)
+		x=x.unsqueeze_(1)
+		print x.shape
 		out = self.layer1(x)
 		print out.shape
 		out = self.layer2(out)
