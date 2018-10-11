@@ -47,7 +47,7 @@ class MiniConvNet(nn.Module):
 	def forward(self, x):
 		print x.shape
 		x=x.unsqueeze_(1)
-		x=x.cuda()
+		x=x.type(torch.cuda.FloatTensor)
 		out = self.layer1(x)
 		print out.shape
 		out = self.layer2(out)
