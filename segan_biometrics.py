@@ -37,10 +37,10 @@ class MiniConvNet(nn.Module):
 			nn.ReLU(),
 			nn.AvgPool2d(kernel_size=6, stride=4, padding=0))
 		self.fc = nn.Sequential(
-			nn.Linear(64,1024),
+			nn.Linear(64,512),
 			nn.ReLU(),
 			nn.Dropout(),
-			nn.Linear(1024,num_classes),
+			nn.Linear(512,num_classes),
 			torch.nn.Softmax(dim=num_classes))
 
 	def forward(self, x):
@@ -51,6 +51,7 @@ class MiniConvNet(nn.Module):
 		out = self.layer3(out)
 		out = self.layer4(out)
 		out = out.reshape(out.size(0), -1)
+		print out
 		out = self.fc(out)
 		print out
 		return out
