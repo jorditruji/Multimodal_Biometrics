@@ -111,7 +111,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
-			running_corrects += torch.sum(preds == labels.data)
+			running_corrects += torch.sum(preds == local_labels.data)
 
 		epoch_loss = running_loss / dataseize
 		epoch_acc = running_corrects.double() / dataseize
@@ -124,6 +124,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 		running_loss = 0.0
 		running_corrects = 0
+		dataseize=0
 		# Validation
 		with torch.set_grad_enabled(False):
 			for local_batch, local_labels in validation_generator:
@@ -136,10 +137,10 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 				# statistics
 				running_loss += loss.item() * local_batch.size(0)
-				running_corrects += torch.sum(preds == labels.data)
+				running_corrects += torch.sum(preds == local_labels.data)
 
-			epoch_loss = running_loss / dataset_sizes[phase]
-			epoch_acc = running_corrects.double() / dataset_sizes[phase]
+			epoch_loss = running_loss / dataseize
+			epoch_acc = running_corrects.double() / dataseize
 
 			print('{} Loss: {:.4f} Acc: {:.4f}'.format(
 			    phase, epoch_loss, epoch_acc))
