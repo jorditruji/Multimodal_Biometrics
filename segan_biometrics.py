@@ -1,4 +1,4 @@
-
+from __future__ import division
 from Data_Management.data_utils import load_partitions
 import torch
 from torch.utils import data

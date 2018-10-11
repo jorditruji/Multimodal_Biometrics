@@ -7,6 +7,7 @@ import unicodedata
 from data_utils import path_img2wav
 import numpy as np
 import librosa
+from __future__ import division
 
 printable=set(string.printable)
 
@@ -48,9 +49,9 @@ class Dataset(data.Dataset):
         print "wav_shape:"
         print np.unique(wav_data)
         # Some preprocessing
-        if self.preprocessing:
-            wav_data = self.abs_normalize_wave_minmax(wav_data)
-            wav_data = self.pre_emphasize(wav_data)
+        #if self.preprocessing:
+        wav_data = self.abs_normalize_wave_minmax(wav_data)
+        wav_data = self.pre_emphasize(wav_data)
             #MFCC extraction
         if self.mfcc:
             mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=16)
