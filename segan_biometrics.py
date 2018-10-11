@@ -77,6 +77,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		model.train()  # Set model to training mode
 		# Training
 		dataseize=0
+		print training_generator
 		for local_batch, local_labels in training_generator:
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
