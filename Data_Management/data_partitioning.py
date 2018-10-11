@@ -2,6 +2,8 @@ import pickle
 import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
+
 
 def read_pkl(path):
 	#Reads paths to img's pf the dataset
@@ -10,7 +12,7 @@ def read_pkl(path):
 	labels=[sample.split('/')[5] for sample in data]
 	return data,labels
 
-def split_dataset(data,labels, train_per=0.5, val_per=0.5):
+def split_dataset(data,labels, train_per=0.7, val_per=0.2):
 	#Splits dataset in 2 or 3 partitions (if train%+val%<1 the rest goes to test)
 	if train_per+val_per<1:
 		x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=1-train_per)
@@ -67,7 +69,38 @@ def filter_dataset_by_classes(data, labels, min_samples=10, limit=False):
 	return reduced_data, reduced_labels
 
 
+def save_partition(data,labels,name):
+	'''Saves matrixes intro numpy file'''
+	data=[[x_sample, x_label] for x_sample, x_label in zip(data, name)]
+	np.save(name, data, allow_pickle=True, fix_imports=True)
+
+
+
 data,labels=read_pkl('faces2.pkl')
-print(len(labels))
-data,labels=filter_dataset_by_classes(data,labels, min_samples=1)
-print(len(labels))
+data,labels=filter_dataset_by_classes(data,labels, min_samples=300)
+
+#Encode labels:
+label_encoder = preprocessing.LabelEncoder()
+labels=label_encoder.fit_transform(labels)
+
+dict_labels={}
+for label,path in zip(labels,data):
+	dict_labels[path]=label
+
+np.save('labels',dict_labels,allow_pickle=True, fix_imports=True)
+#Split dataset
+x_train, y_train, x_val, y_val, x_test, y_test=split_dataset(data,labels)
+
+
+#Save into dict:
+partition={}
+labels={}
+partition['train']=x_train
+partition['validation']=x_val
+partition['test']=x_test
+print(partition)
+np.save('partition',partition,allow_pickle=True, fix_imports=True)
+print(partition[key] for key in partition.keys())
+
+
+#X_dataset=np.concatenate((x_train,y_train),axis=1)
