@@ -109,7 +109,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				loss.backward()
 				optimizer.step()
 			# statistics
-			running_loss += loss.item() * inputs.size(0)
+			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= inputs.size(0)
 			running_corrects += torch.sum(preds == labels.data)
 
