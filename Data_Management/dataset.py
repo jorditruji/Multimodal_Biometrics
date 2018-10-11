@@ -1,5 +1,14 @@
 import torch
 from torch.utils import data
+import scipy.io.wavfile as wavfile
+import string
+import random
+import unicodedata
+from data_utils import path_img2wav
+import numpy as np
+
+printable=set(string.printable)
+
 
 
 class Dataset(data.Dataset):
@@ -22,10 +31,17 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         'Generates one sample of data'
         # Select sample
-        ID = self.list_IDs[index]
+	try:
+            ID = self.list_IDs[index]
+	    y=self.labels[ID]
+	    print(ID)
+	    ID=path_img2wav(ID)
+	    ID=ID.replace('\n','')
+        except:
+	   print("errors")
+	# Load data and get l
 
-        # Load data and get label
-        fm, wav_data = wavfile.read(filter(lambda x: x in printable, audio_path).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
+	fm, wav_data = wavfile.read(str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav')))
         if fm != 16000:
             raise ValueError('Sampling rate is expected to be 16kHz!')
         
@@ -33,8 +49,8 @@ class Dataset(data.Dataset):
         wav_data = self.abs_normalize_wave_minmax(wav_data)
         wav_data = self.pre_emphasize(wav_data)
 
-        y = self.labels[ID]
-        return X, y
+
+        return wav_data, y
 
 
     def abs_normalize_wave_minmax(self, wavdata):

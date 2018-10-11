@@ -76,7 +76,7 @@ def save_partition(data,labels,name):
 
 def load_partitions():
 	#Loaddddddd
-	return np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/partition.npy'), np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/labels.npy')
+	return np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/partition.npy').item(), np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/labels.npy').item()
 
 '''
 data,labels=read_pkl('faces2.pkl')
