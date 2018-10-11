@@ -46,8 +46,7 @@ class Dataset(data.Dataset):
         if fm != 16000:
             raise ValueError('Sampling rate is expected to be 16kHz!')
         
-        print "wav_shape:"
-        print np.unique(wav_data)
+
         # Some preprocessing
         #if self.preprocessing:
         wav_data = self.abs_normalize_wave_minmax(wav_data)
