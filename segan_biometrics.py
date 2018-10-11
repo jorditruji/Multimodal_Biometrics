@@ -49,14 +49,10 @@ class MiniConvNet(nn.Module):
 		x=x.unsqueeze_(1)
 		x=x.type(torch.cuda.FloatTensor)
 		out = self.layer1(x)
-		print out.shape
 		out = self.layer2(out)
 		out = self.layer3(out)
-		print out.shape
-
 		out = self.layer4(out)
 		out = out.reshape(out.size(0), -1)
-		print out.shape
 		out = self.fc(out)
 		return out
 
