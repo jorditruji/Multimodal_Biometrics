@@ -6,7 +6,7 @@ from torch.utils import data
 # CUDA for PyTorch
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
-cudnn.benchmark = True
+cudnn.benchmark = False
 
 # Parameters
 params = {'batch_size': 64,
