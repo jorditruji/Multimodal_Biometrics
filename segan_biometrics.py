@@ -80,7 +80,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		for local_batch, local_labels in training_generator:
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-
+			print local_labels
 			# Model computations
 
 			running_loss = 0.0
