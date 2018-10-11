@@ -153,11 +153,12 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 	print('Best val Acc: {:4f}'.format(best_acc))
 	# load best model weights
 	model.load_state_dict(best_model_wts)
-	return model
+	return model.cuda()
 
 # CUDA for PyTorch
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
+print device
 
 # Parameters
 params = {'batch_size': 12,
@@ -177,7 +178,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 
-model = MiniConvNet(num_classes=2).to(device)
+model = MiniConvNet(num_classes=27).to(device)
 print (model)
 print(get_n_params(model))
 model_ft = model.to(device)
