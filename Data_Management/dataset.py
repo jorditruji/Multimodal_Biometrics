@@ -1,3 +1,4 @@
+from __future__ import division
 import torch
 from torch.utils import data
 import scipy.io.wavfile as wavfile
@@ -7,7 +8,6 @@ import unicodedata
 from data_utils import path_img2wav
 import numpy as np
 import librosa
-from __future__ import division
 
 printable=set(string.printable)
 
