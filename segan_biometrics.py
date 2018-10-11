@@ -52,6 +52,7 @@ class MiniConvNet(nn.Module):
 		out = self.layer4(out)
 		out = out.reshape(out.size(0), -1)
 		out = self.fc(out)
+		print out
 		return out
 
 
