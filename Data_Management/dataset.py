@@ -40,22 +40,22 @@ class Dataset(data.Dataset):
             ID=ID.replace('\n','')
         except:
             print("errors")
-        # Load data and get l
+        # Load data and get label
         fm, wav_data = wavfile.read(str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav')))
         if fm != 16000:
             raise ValueError('Sampling rate is expected to be 16kHz!')
         
         print "wav_shape:"
-        print wav_data.shape
+        print np.unique(wav_data)
         # Some preprocessing
         if self.preprocessing:
             wav_data = self.abs_normalize_wave_minmax(wav_data)
             wav_data = self.pre_emphasize(wav_data)
+            #MFCC extraction
         if self.mfcc:
             mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=16)
             print mfcc_matric.shape
             return mfcc_matric
-
 
         return wav_data, y
 

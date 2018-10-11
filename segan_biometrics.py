@@ -8,7 +8,7 @@ use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
 
 # Parameters
-params = {'batch_size': 64,
+params = {'batch_size': 12,
           'shuffle': True,
           'num_workers': 6}
 max_epochs = 100
