@@ -110,7 +110,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				optimizer.step()
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
-			dataseize+= inputs.size(0)
+			dataseize+= local_batch.size(0)
 			running_corrects += torch.sum(preds == labels.data)
 
 		epoch_loss = running_loss / dataseize
@@ -135,7 +135,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 
 				# statistics
-				running_loss += loss.item() * inputs.size(0)
+				running_loss += loss.item() * local_batch.size(0)
 				running_corrects += torch.sum(preds == labels.data)
 
 			epoch_loss = running_loss / dataset_sizes[phase]
