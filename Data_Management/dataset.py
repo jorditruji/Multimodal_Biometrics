@@ -53,8 +53,11 @@ class Dataset(data.Dataset):
         wav_data = self.pre_emphasize(wav_data)
             #MFCC extraction
         if self.mfcc:
-            mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
-            return mfcc_matric,y
+            try:
+                mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
+                return mfcc_matric,y
+            except:
+                return
 
         return wav_data, y
 
