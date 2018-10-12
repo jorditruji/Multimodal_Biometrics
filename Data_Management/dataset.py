@@ -71,7 +71,10 @@ class Dataset(data.Dataset):
             
             mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
             mfcc_matric=mfcc_matric.astype(np.float)
-            mfcc_matric=mfcc_matric/np.max(np.abs(mfcc_matric))
+            print "mean"
+            print np.mean(mfcc_matric)
+            mfcc_matric=np.subtract(mfcc_matric,np.mean(mfcc_matric))
+            print mfcc_matric
             return mfcc_matric,y
 
 
