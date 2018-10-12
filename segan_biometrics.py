@@ -122,7 +122,6 @@ params = {'batch_size': 32,
 
 partition,labels=load_partitions()
 
-partition['train'].remove('/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40225.wav')
 
 partition_cleaned={}
 partition_cleaned['validation']=partition['validation']
@@ -131,6 +130,8 @@ for sample in partition['train']:
 	sample=str(filter(lambda x: x in printable, sample).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
 	if sample!='/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40225.wav':
 		partition_cleaned['train'].append(sample)
+	else:
+		print "Found empy wav!!! "
 # Generators
 training_set = Dataset(partition_cleaned['train'], labels)
 training_generator = data.DataLoader(training_set, **params)
