@@ -40,21 +40,28 @@ class Dataset(data.Dataset):
 
         # Select sample
         ID = self.list_IDs[index]
+        y=self.labels[ID]
         #Problems with empty wav files... if we find a forbidden we will get another random sample
-        while ID in self.forbidden:
+        correct_sample=False:
+        while correct_sample ==False:
+            ID=path_img2wav(ID)
+
+            # Load data and get label
+            fm, wav_data = wavfile.read(ID)
+            if fm != 16000:
+                raise ValueError('Sampling rate is expected to be 16kHz!')
+            
+
+            if np.max(np.abs(wav_data))>0:
+                correct_sample=True
+
+            if index==self.__len__()-1:
+                index=0
             index=index+1
             ID = self.list_IDs[index]
 
-        y=self.labels[ID]
-        ID=path_img2wav(ID)
- 
-
-        # Load data and get label
-        fm, wav_data = wavfile.read(ID)
-        if fm != 16000:
-            raise ValueError('Sampling rate is expected to be 16kHz!')
         
-
+        
         # Some preprocessing
         #if self.preprocessing:
         wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
