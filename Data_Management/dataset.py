@@ -42,7 +42,7 @@ class Dataset(data.Dataset):
         ID = self.list_IDs[index]
         y=self.labels[ID]
         #Problems with empty wav files... if we find a forbidden we will get another random sample
-        correct_sample=False:
+        correct_sample=False
         while correct_sample ==False:
             ID=path_img2wav(ID)
 
@@ -54,11 +54,11 @@ class Dataset(data.Dataset):
 
             if np.max(np.abs(wav_data))>0:
                 correct_sample=True
-
-            if index==self.__len__()-1:
-                index=0
-            index=index+1
-            ID = self.list_IDs[index]
+            else:
+                if index==self.__len__()-1:
+                    index=0
+                index=index+1
+                ID = self.list_IDs[index]
 
         
         
