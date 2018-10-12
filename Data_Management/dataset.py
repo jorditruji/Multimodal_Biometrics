@@ -25,38 +25,29 @@ class Dataset(data.Dataset):
         self.list_IDs = list_IDs
         self.mfcc = True
         self.preprocessing=False
+        self.forbidden=np.load('forbidden.npy').item()
 
     def __len__(self):
         '''Denotes the total number of samples'''
         return len(self.list_IDs)
 
 
+
+
     def __getitem__(self, index):
         'Generates one sample of data'
+
         # Select sample
+        ID = self.list_IDs[index]
         #Problems with empty wav files... if we find a forbidden we will get another random sample
-        forbidden=["/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40125.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/QueridaPringada5-SoyUnaPringada-Umb5hCEBPNo_frames/QueridaPringada5-SoyUnaPringada-Umb5hCEBPNo_preprocessed_frame_22375.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPri$gada-gCtfChPoZjw_preprocessed_frame_44825.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/unicoos/audio/Operacionescombinadas01PRIMARIAunicoos-UWkvBSCBOIY_frames/Operacionescombinadas01PRIMARIAunicoos-UWkvBSCBOIY_preprocessed_frame_19803.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_frames/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_preprocessed_frame_20850.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_preprocessed_frame_44750.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_preprocessed_frame_44775.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_preprocessed_frame_44800.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_frames/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_preprocessed_frame_21125.wav"
-                    ]
-
-        try:
+        while ID in self.forbidden:
+            index=index+1
             ID = self.list_IDs[index]
-            if ID==forbidden:
-                index=index+3
-                ID = self.list_IDs[index]
 
-            y=self.labels[ID]
-            ID=path_img2wav(ID)
-            ID=ID.replace('\n','')
-        except:
-            print("errors")
+        y=self.labels[ID]
+        ID=path_img2wav(ID)
+ 
+
         # Load data and get label
         fm, wav_data = wavfile.read(ID)
         if fm != 16000:
@@ -83,7 +74,9 @@ class Dataset(data.Dataset):
         x = wavdata.astype(np.int32)
         imax = np.max(np.abs(x))
         if imax==0:
-            print imax,name
+            self.forbidden.append(name)
+            #Update forbiddens:
+            np.save('forbidden.npy', self.forbidden, allow_pickle=True, fix_imports=True)
         try:
             x_n = x / imax
             return x_n
