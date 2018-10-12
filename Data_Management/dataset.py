@@ -40,7 +40,7 @@ class Dataset(data.Dataset):
                     "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPri$gada-gCtfChPoZjw_preprocessed_frame_44825.wav"
                     "/imatge/froldan/work/youtubers_videos_audios/unicoos/audio/Operacionescombinadas01PRIMARIAunicoos-UWkvBSCBOIY_frames/Operacionescombinadas01PRIMARIAunicoos-UWkvBSCBOIY_preprocessed_frame_19803.wav"
                     "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_frames/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_preprocessed_frame_20850.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_frames/Lalocadelgimnasio-SoyUnaPringada-itpb_K5tuuY_preprocessed_frame_20850.wav"
+                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_preprocessed_frame_44750.wav"
                     ]
 
         try:
