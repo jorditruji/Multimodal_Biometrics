@@ -24,6 +24,11 @@ def get_n_params(model):
     print "Parametros: {}".format(str(pp))    
     return pp
 
+
+def to_categorical(y, num_classes):
+    """ 1-hot encodes a tensor """
+    return np.eye(num_classes, dtype='uint8')[y]
+
 def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 	'''train the network'''
 	since = time.time()
@@ -62,6 +67,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			with torch.set_grad_enabled(True):
 				outputs = model(local_batch)
 				_, preds = torch.max(outputs, 1)
+				local_labels=to_categorical(local_labels, 27)
 				print outputs,local_labels
 				loss = criterion(outputs, local_labels)
 				# backward + optimize only if in training phase
