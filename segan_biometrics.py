@@ -70,9 +70,16 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				_, preds = torch.max(outputs, 1)
 				loss = criterion(outputs, local_labels)
 				# backward + optimize only if in training phase
-				loss.backward()
-				optimizer.step()
-				scheduler.step()
+				a = list(model.parameters())[0].clone()
+                                loss.backward()
+                                optimizer.step()
+                                scheduler.step()
+				
+
+				b = list(model.parameters())[0].clone()
+				print torch.equal(a.data, b.data)
+
+				
 				# statistics
 				running_loss += loss.item() * local_batch.size(0)
 				dataseize+= local_batch.size(0)
@@ -166,7 +173,8 @@ model_ft = model.to(device)
 
 criterion = nn.CrossEntropyLoss()
 
-print model_ft.parameters()
+print list(model.parameters())
+
 # Observe that all parameters are being optimized
 optimizer_ft = optim.SGD(model_ft.parameters(), lr=1e-4, momentum=0.9)
 
