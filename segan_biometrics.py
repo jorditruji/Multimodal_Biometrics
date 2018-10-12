@@ -76,7 +76,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				running_loss += loss.item() * local_batch.size(0)
 				dataseize+= local_batch.size(0)
 				running_corrects += torch.sum(preds == local_labels.data)
-				sys.stdout.write('\r%s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item())),
+				sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item(),' and acc: ',torch.sum(preds == local_labels.data))),
 				sys.stdout.flush()
 
 		epoch_loss = running_loss / dataseize
