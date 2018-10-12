@@ -79,7 +79,7 @@ class Dataset(data.Dataset):
 
     def abs_normalize_wave_minmax(self, wavdata,name):
         '''normalize'''
-        x = wavdata.astype(np.int32)
+        x = wavdata.astype(np.float)
         imax = np.max(np.abs(x))
         if imax==0:
             self.forbidden.append(name)
