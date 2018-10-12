@@ -68,7 +68,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				outputs = model(local_batch)
 				_, preds = torch.max(outputs, 1)
 				print local_labels
-				local_labels=to_categorical(local_labels, 27)
+				local_labels=to_categorical(local_labels, 27).cuda()
 
 				print local_labels
 				loss = criterion(outputs, local_labels)
