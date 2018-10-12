@@ -120,6 +120,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			acc=float(corrects)/float(total)
 			sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing val batch: ', cont, '/', validation_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
 			sys.stdout.flush()
+			break
 
 		epoch_loss = running_loss / dataseize
 		epoch_acc = running_corrects.double() / dataseize
