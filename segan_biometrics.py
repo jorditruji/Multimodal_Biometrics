@@ -71,7 +71,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				# backward + optimize only if in training phase
 				loss.backward()
 				optimizer.step()
-				print preds, local_labels.data
 				# statistics
 				running_loss += loss.item() * local_batch.size(0)
 				dataseize+= local_batch.size(0)
