@@ -72,8 +72,7 @@ class Dataset(data.Dataset):
             
             mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=64)
             mfcc_matric=mfcc_matric / np.max(mfcc_matric)
-            for frame in mfcc_matric:
-                print frame
+            
             return mfcc_matric,y
 
 
