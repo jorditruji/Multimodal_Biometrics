@@ -71,7 +71,7 @@ class Dataset(data.Dataset):
         if self.mfcc:
             
             mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=64)
-            mfcc_matric=mfcc_matric / np.max(mfcc_matric)
+            mfcc_matric=(mfcc_matric - np.mean(mfcc_matric)) / np.std(mfcc_matric)
             
             return mfcc_matric,y
 
