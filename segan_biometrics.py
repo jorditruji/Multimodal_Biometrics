@@ -71,11 +71,9 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				loss = criterion(outputs, local_labels)
 				# backward + optimize only if in training phase
 				a = list(model.parameters())[0].clone()
-                loss.backward()
-                optimizer.step()
-                scheduler.step()
-				
-
+				loss.backward()
+				optimizer.step()
+				scheduler.step()
 				b = list(model.parameters())[0].clone()
 				print torch.equal(a.data, b.data)
 
