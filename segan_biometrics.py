@@ -42,8 +42,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		dataseize=0
 		cont=0
 		for local_batch, local_labels in training_generator:
-			sys.stdout.write('\r%s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__())),
-			sys.stdout.flush()
+
 			cont+=1
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
@@ -69,9 +68,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
 			running_corrects += torch.sum(preds == local_labels.data)
-			sys.stdout.write('\r%s %s ' % ('running_loss: ', loss.item()))
+			sys.stdout.write('\r%s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item())),
 			sys.stdout.flush()
-
 		epoch_loss = running_loss / dataseize
 		epoch_acc = running_corrects.double() / dataseize
 
