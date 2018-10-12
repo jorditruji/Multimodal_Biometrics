@@ -29,7 +29,7 @@ class MiniConvNet(nn.Module):
 			nn.MaxPool2d(kernel_size=2, stride=2))
 			#nn.AvgPool2d(kernel_size=3, stride=4, padding=0))
 		self.fc = nn.Sequential(
-			nn.Linear(120,1000),
+			nn.Linear(60,1000),
 			nn.ReLU(),
 			nn.Dropout(),
 			nn.Linear(1000,num_classes),
