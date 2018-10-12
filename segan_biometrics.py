@@ -46,25 +46,26 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		# Training
 		dataseize=0
 		cont=0
-		for local_batch, local_labels in training_generator:
+		with torch.set_grad_enabled(True):
 
-			cont+=1
-			# Transfer to GPU
+			for local_batch, local_labels in training_generator:
+
+				cont+=1
+				# Transfer to GPU
 
 
-			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-			# Model computations
+				local_batch, local_labels = local_batch.to(device), local_labels.to(device)
+				# Model computations
 
-			running_loss = 0.0
-			running_corrects = 0
+				running_loss = 0.0
+				running_corrects = 0
 
-			# zero the parameter gradients
-			optimizer.zero_grad()
+				# zero the parameter gradients
+				optimizer.zero_grad()
 
-			# forward + shapes modification...
-			local_batch=local_batch.unsqueeze_(1)
-			local_batch=local_batch.type(torch.cuda.FloatTensor)
-			with torch.set_grad_enabled(True):
+				# forward + shapes modification...
+				local_batch=local_batch.unsqueeze_(1)
+				local_batch=local_batch.type(torch.cuda.FloatTensor)
 				outputs = model(local_batch)
 				_, preds = torch.max(outputs, 1)
 				loss = criterion(outputs, local_labels)
@@ -81,10 +82,10 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
 				sys.stdout.flush()
 
-		epoch_loss = running_loss / dataseize
-		epoch_acc = running_corrects.double() / dataseize
+			epoch_loss = running_loss / dataseize
+			epoch_acc = running_corrects.double() / dataseize
 
-		print('{} Loss: {:.4f} Acc: {:.4f}'.format("Train", epoch_loss, epoch_acc))
+			print('\n{} Loss: {:.4f} Acc: {:.4f}'.format("Train", epoch_loss, epoch_acc))
 
 
 		        
@@ -110,7 +111,11 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				running_loss += loss.item() * local_batch.size(0)
 				running_corrects += torch.sum(preds == local_labels.data)
 				dataseize+= local_batch.size(0)
-
+				corrects=torch.sum(preds == local_labels.data)
+				total=local_batch.size(0)
+				acc=float(corrects)/float(total)
+				sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing val batch: ', cont, '/', validation_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
+				sys.stdout.flush()
 
 			epoch_loss = running_loss / dataseize
 			epoch_acc = running_corrects.double() / dataseize
@@ -161,7 +166,7 @@ model_ft = model.to(device)
 criterion = nn.CrossEntropyLoss()
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
+optimizer_ft = optim.SGD(model_ft.parameters(), lr=1e-4, momentum=0.9)
 
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
