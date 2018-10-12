@@ -34,8 +34,15 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         'Generates one sample of data'
         # Select sample
+        #Problems with empty wav files... if we find a forbidden we will get another random sample
+        forbidden="/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40125.wav"
+
         try:
             ID = self.list_IDs[index]
+            if ID==forbidden:
+                index=index+3
+                ID = self.list_IDs[index]
+
             y=self.labels[ID]
             ID=path_img2wav(ID)
             ID=ID.replace('\n','')

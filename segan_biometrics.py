@@ -25,6 +25,9 @@ def get_n_params(model):
     return pp
 
 def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
+	'''train the network'''
+	#Problems with empty wav files... if we find a forbidden we will get another random sample
+	forbidden="/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40125.wav"
 	since = time.time()
 	best_model_wts = copy.deepcopy(model.state_dict())
 	best_acc = 0.0
