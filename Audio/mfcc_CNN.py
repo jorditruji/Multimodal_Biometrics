@@ -7,7 +7,7 @@ class ConvNet(nn.Module):
     def __init__(self, num_classes=2):
         super(ConvNet, self).__init__()
         self.layer1 = nn.Sequential(
-            nn.Conv2d(3, 16, kernel_size=7, stride=2, padding=2),
+            nn.Conv2d(1, 16, kernel_size=7, stride=2, padding=2),
             nn.BatchNorm2d(16),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
