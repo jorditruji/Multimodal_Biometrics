@@ -8,6 +8,7 @@ import unicodedata
 from data_utils import path_img2wav
 import numpy as np
 import librosa
+from python_speech_features.python_speech_features import mfcc
 
 printable=set(string.printable)
 
@@ -65,11 +66,11 @@ class Dataset(data.Dataset):
         # Some preprocessing
         #if self.preprocessing:
         wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
-        #wav_data = self.pre_emphasize(wav_data)
+        wav_data = self.pre_emphasize(wav_data)
         #MFCC extraction
         if self.mfcc:
             
-            mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
+            mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=64)
 
             return mfcc_matric,y
 
