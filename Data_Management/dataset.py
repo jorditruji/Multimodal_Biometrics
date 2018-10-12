@@ -71,7 +71,7 @@ class Dataset(data.Dataset):
             try:
                 mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
                 print mfcc_matric
-                return mfcc_matric,y
+                return mfcc_matric/max(mfcc_matric),y
             except:
                 return
 
