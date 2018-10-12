@@ -8,7 +8,7 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 import time
 import copy
-from Audio.mfcc_CNN import MiniConvNet
+from Audio.mfcc_CNN import MiniConvNet, ConvNet
 import string
 import sys
 import numpy as np
