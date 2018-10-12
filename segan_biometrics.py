@@ -89,6 +89,9 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		with torch.set_grad_enabled(False):
 			for local_batch, local_labels in validation_generator:
 				# Transfer to GPU
+				# forward + shapes modification...
+				local_batch=local_batch.unsqueeze_(1)
+				local_batch=local_batch.type(torch.cuda.FloatTensor)
 				local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 				outputs = model(local_batch)
 				_, preds = torch.max(outputs, 1)
