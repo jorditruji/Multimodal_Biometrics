@@ -11,7 +11,7 @@ import copy
 from Audio.mfcc_CNN import MiniConvNet
 import string
 import sys
-
+import numpy as np
 
 # Get model nu,ber of params
 def get_n_params(model):
