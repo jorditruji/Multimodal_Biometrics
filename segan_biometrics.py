@@ -68,6 +68,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				outputs = model(local_batch)
 				_, preds = torch.max(outputs, 1)
 				local_labels=torch.tensor(to_categorical(local_labels, 27), device=device).type(torch.cuda.LongTensor)
+				print local_labels.shape, outputs.shape
 				loss = criterion(outputs, local_labels)
 				# backward + optimize only if in training phase
 				loss.backward()
