@@ -165,7 +165,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 
-model = MiniConvNet(num_classes=27).to(device)
+model = ConvNet(num_classes=27).to(device)
 
 model_ft = model.to(device)
 
@@ -174,7 +174,7 @@ criterion = nn.CrossEntropyLoss()
 print list(model.parameters())
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.Adam(model_ft.parameters(), lr=0.0001)
+optimizer_ft = optim.Adagrad(model_ft.parameters(), lr=0.001, lr_decay=0)
 
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
