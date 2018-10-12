@@ -52,8 +52,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 				cont+=1
 				# Transfer to GPU
-
-
 				local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 				# Model computations
 
@@ -72,6 +70,9 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				# backward + optimize only if in training phase
 				a = list(model.parameters())[0].clone()
 				loss.backward()
+
+				for param in model.parameters():
+					print(param.grad.data.sum())
 				optimizer.step()
 				scheduler.step()
 				b = list(model.parameters())[0].clone()
