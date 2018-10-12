@@ -71,6 +71,7 @@ class Dataset(data.Dataset):
         if self.mfcc:
             
             mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=64)
+            print np.max(mfcc_matric)
             for frame in mfcc_matric:
                 print frame
             return mfcc_matric,y
