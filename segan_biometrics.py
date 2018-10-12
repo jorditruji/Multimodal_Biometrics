@@ -41,57 +41,56 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 	#Loop over epochs
 	for epoch in range(max_epochs):
 		print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-		scheduler.step()
 		model.train()  # Set model to training mode
 		# Training
 		dataseize=0
 		cont=0
-		with torch.set_grad_enabled(True):
 
-			for local_batch, local_labels in training_generator:
 
-				cont+=1
-				# Transfer to GPU
-				local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-				# Model computations
+		for local_batch, local_labels in training_generator:
 
-				running_loss = 0.0
-				running_corrects = 0
+			cont+=1
+			# Transfer to GPU
+			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
+			# Model computations
 
-				# zero the parameter gradients
-				optimizer.zero_grad()
+			running_loss = 0.0
+			running_corrects = 0
 
-				# forward + shapes modification...
-				local_batch=local_batch.unsqueeze_(1)
-				local_batch=local_batch.type(torch.cuda.FloatTensor)
-				outputs = model(local_batch)
-				_, preds = torch.max(outputs, 1)
-				loss = criterion(outputs, local_labels)
-				# backward + optimize only if in training phase
-				a = list(model.parameters())[0].clone()
-				loss.backward()
 
-				for param in model.parameters():
-					print(param.grad.data.sum())
-				optimizer.step()
-				scheduler.step()
-				b = list(model.parameters())[0].clone()
-				print torch.equal(a.data, b.data)
+			# forward + shapes modification...
+			local_batch=local_batch.unsqueeze_(1)
+			local_batch=local_batch.type(torch.cuda.FloatTensor)
+			outputs = model(local_batch)
+			_, preds = torch.max(outputs, 1)
+			loss = criterion(outputs, local_labels)
+			# backward + optimize only if in training phase
+			# zero the parameter gradients
+			optimizer.zero_grad()
+			a = list(model.parameters())[0].clone()
+			loss.backward()
 
-				# statistics
-				running_loss += loss.item() * local_batch.size(0)
-				dataseize+= local_batch.size(0)
-				running_corrects += torch.sum(preds == local_labels.data)
-				corrects=torch.sum(preds == local_labels.data)
-				total=local_batch.size(0)
-				acc=float(corrects)/float(total)
-				sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
-				sys.stdout.flush()
+			for param in model.parameters():
+				print(param.grad.data.sum())
+			optimizer.step()
+			scheduler.step()
+			b = list(model.parameters())[0].clone()
+			print torch.equal(a.data, b.data)
 
-			epoch_loss = running_loss / dataseize
-			epoch_acc = running_corrects.double() / dataseize
+			# statistics
+			running_loss += loss.item() * local_batch.size(0)
+			dataseize+= local_batch.size(0)
+			running_corrects += torch.sum(preds == local_labels.data)
+			corrects=torch.sum(preds == local_labels.data)
+			total=local_batch.size(0)
+			acc=float(corrects)/float(total)
+			sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
+			sys.stdout.flush()
 
-			print('\n{} Loss: {:.4f} Acc: {:.4f}'.format("Train", epoch_loss, epoch_acc))
+		epoch_loss = running_loss / dataseize
+		epoch_acc = running_corrects.double() / dataseize
+
+		print('\n{} Loss: {:.4f} Acc: {:.4f}'.format("Train", epoch_loss, epoch_acc))
 
 
 		        
@@ -101,37 +100,36 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		running_corrects = 0
 		dataseize=0
 		# Validation
-		with torch.set_grad_enabled(False):
-			for local_batch, local_labels in validation_generator:
-				# Transfer to GPU
-				# forward + shapes modification...
-				local_batch=local_batch.unsqueeze_(1)
-				local_batch=local_batch.type(torch.cuda.FloatTensor)
-				local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-				outputs = model(local_batch)
-				_, preds = torch.max(outputs, 1)
-				loss = criterion(outputs, local_labels)
+		for local_batch, local_labels in validation_generator:
+			# Transfer to GPU
+			# forward + shapes modification...
+			local_batch=local_batch.unsqueeze_(1)
+			local_batch=local_batch.type(torch.cuda.FloatTensor)
+			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
+			outputs = model(local_batch)
+			_, preds = torch.max(outputs, 1)
+			loss = criterion(outputs, local_labels)
 
 
-				# statistics
-				running_loss += loss.item() * local_batch.size(0)
-				running_corrects += torch.sum(preds == local_labels.data)
-				dataseize+= local_batch.size(0)
-				corrects=torch.sum(preds == local_labels.data)
-				total=local_batch.size(0)
-				acc=float(corrects)/float(total)
-				sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing val batch: ', cont, '/', validation_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
-				sys.stdout.flush()
+			# statistics
+			running_loss += loss.item() * local_batch.size(0)
+			running_corrects += torch.sum(preds == local_labels.data)
+			dataseize+= local_batch.size(0)
+			corrects=torch.sum(preds == local_labels.data)
+			total=local_batch.size(0)
+			acc=float(corrects)/float(total)
+			sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing val batch: ', cont, '/', validation_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
+			sys.stdout.flush()
 
-			epoch_loss = running_loss / dataseize
-			epoch_acc = running_corrects.double() / dataseize
+		epoch_loss = running_loss / dataseize
+		epoch_acc = running_corrects.double() / dataseize
 
-			print('Val Loss: {:.4f} Acc: {:.4f}'.format( epoch_loss, epoch_acc))
+		print('Val Loss: {:.4f} Acc: {:.4f}'.format( epoch_loss, epoch_acc))
 
-			# deep copy the model
-			if  epoch_acc > best_acc:
-				best_acc = epoch_acc
-				best_model_wts = copy.deepcopy(model.state_dict())
+		# deep copy the model
+		if  epoch_acc > best_acc:
+			best_acc = epoch_acc
+			best_model_wts = copy.deepcopy(model.state_dict())
 
 	time_elapsed = time.time() - since
 	print('Training complete in {:.0f}m {:.0f}s'.format(
