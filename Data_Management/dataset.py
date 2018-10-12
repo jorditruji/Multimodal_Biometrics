@@ -52,7 +52,7 @@ class Dataset(data.Dataset):
         name=str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
         wav_data = self.abs_normalize_wave_minmax(wav_data,name)
         wav_data = self.pre_emphasize(wav_data)
-            #MFCC extraction
+        #MFCC extraction
         if self.mfcc:
             try:
                 mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
