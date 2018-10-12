@@ -42,15 +42,14 @@ class Dataset(data.Dataset):
         except:
             print("errors")
         # Load data and get label
-        fm, wav_data = wavfile.read(str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav')))
+        fm, wav_data = wavfile.read(ID)
         if fm != 16000:
             raise ValueError('Sampling rate is expected to be 16kHz!')
         
 
         # Some preprocessing
         #if self.preprocessing:
-        name=str(filter(lambda x: x in printable, ID).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
-        wav_data = self.abs_normalize_wave_minmax(wav_data,name)
+        wav_data = self.abs_normalize_wave_minmax(wav_data)
         wav_data = self.pre_emphasize(wav_data)
         #MFCC extraction
         if self.mfcc:
@@ -63,12 +62,12 @@ class Dataset(data.Dataset):
         return wav_data, y
 
 
-    def abs_normalize_wave_minmax(self, wavdata,name):
+    def abs_normalize_wave_minmax(self, wavdata):
         '''normalize'''
         x = wavdata.astype(np.int32)
         imax = np.max(np.abs(x))
         if imax==0:
-            print imax,name
+            print imax
         try:
             x_n = x / imax
             return x_n
