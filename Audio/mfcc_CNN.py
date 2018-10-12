@@ -29,10 +29,10 @@ class MiniConvNet(nn.Module):
 			nn.MaxPool2d(kernel_size=2, stride=2))
 			#nn.AvgPool2d(kernel_size=3, stride=4, padding=0))
 		self.fc = nn.Sequential(
-			nn.Linear(192,512),
+			nn.Linear(144,1000),
 			nn.ReLU(),
 			nn.Dropout(),
-			nn.Linear(512,num_classes),
+			nn.Linear(1000,num_classes),
 			torch.nn.Softmax())
 
 	def forward(self, x):
