@@ -119,6 +119,7 @@ params = {'batch_size': 32,
           'shuffle': True,
           'num_workers': 6}
 
+printable=set(string.printable)
 
 partition,labels=load_partitions()
 
