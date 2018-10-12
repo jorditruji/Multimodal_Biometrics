@@ -79,8 +79,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				b = list(model.parameters())[0].clone()
 				print torch.equal(a.data, b.data)
 				for p,n in zip(model.parameters(),model._all_weights[0]):
-    				if n[:6] == 'weight':
-        			print('===========\ngradient:{}\n----------\n{}'.format(n,p.grad))
+					if n[:6] == 'weight':
+						print('===========\ngradient:{}\n----------\n{}'.format(n,p.grad))
 				# statistics
 				running_loss += loss.item() * local_batch.size(0)
 				dataseize+= local_batch.size(0)
