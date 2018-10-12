@@ -102,7 +102,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				_, preds = torch.max(outputs, 1)
 				loss = criterion(outputs, local_labels)
 
-
+				print preds, local_labels.data
 				# statistics
 				running_loss += loss.item() * local_batch.size(0)
 				running_corrects += torch.sum(preds == local_labels.data)
@@ -141,7 +141,6 @@ params = {'batch_size': 64,
 
 partition,labels=load_partitions()
 
-print max(labels[labels.keys()]),min(labels[labels.keys()])
 
 # Generators
 training_set = Dataset(partition['train'], labels)
