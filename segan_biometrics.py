@@ -10,7 +10,7 @@ import time
 import copy
 from Audio.mfcc_CNN import MiniConvNet
 import string
-
+import sys
 
 
 # Get model nu,ber of params
