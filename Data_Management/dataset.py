@@ -69,11 +69,8 @@ class Dataset(data.Dataset):
         #MFCC extraction
         if self.mfcc:
             
-            mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64,norm='ortho')
-            print librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
+            mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
 
-            print "NORMMMMMMMMMMMMMMMMMMMMMM"
-            print librosa.feature.mfcc(wav_data,fm,n_mfcc=64,norm='ortho')
             return mfcc_matric,y
 
 
