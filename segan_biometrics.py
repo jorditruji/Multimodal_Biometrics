@@ -26,8 +26,6 @@ def get_n_params(model):
 
 def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 	'''train the network'''
-	#Problems with empty wav files... if we find a forbidden we will get another random sample
-	forbidden="/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40125.wav"
 	since = time.time()
 	best_model_wts = copy.deepcopy(model.state_dict())
 	best_acc = 0.0
@@ -42,7 +40,11 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		model.train()  # Set model to training mode
 		# Training
 		dataseize=0
+		cont=0
 		for local_batch, local_labels in training_generator:
+			sys.stdout.write('\r%s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__())),
+			sys.stdout.flush()
+			cont+=1
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 			# Model computations
@@ -67,6 +69,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
 			running_corrects += torch.sum(preds == local_labels.data)
+			sys.stdout.write('\r%s %s ' % ('running_loss: ', loss.item()))
+			sys.stdout.flush()
 
 		epoch_loss = running_loss / dataseize
 		epoch_acc = running_corrects.double() / dataseize
