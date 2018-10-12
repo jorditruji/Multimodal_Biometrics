@@ -8,7 +8,7 @@ import unicodedata
 from data_utils import path_img2wav
 import numpy as np
 import librosa
-from python_speech_features.python_speech_features import mfcc
+from python_speech_features import mfcc
 
 printable=set(string.printable)
 
