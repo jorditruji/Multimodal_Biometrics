@@ -37,7 +37,9 @@ class Dataset(data.Dataset):
         #Problems with empty wav files... if we find a forbidden we will get another random sample
         forbidden=["/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40125.wav"
                     "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/QueridaPringada5-SoyUnaPringada-Umb5hCEBPNo_frames/QueridaPringada5-SoyUnaPringada-Umb5hCEBPNo_preprocessed_frame_22375.wav"
-                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPri$gada-gCtfChPoZjw_preprocessed_frame_44825.wav"]
+                    "/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Videosqueodio3-SoyUnaPringada-gCtfChPoZjw_frames/Videosqueodio3-SoyUnaPri$gada-gCtfChPoZjw_preprocessed_frame_44825.wav"
+                    "/imatge/froldan/work/youtubers_videos_audios/unicoos/audio/Operacionescombinadas01PRIMARIAunicoos-UWkvBSCBOIY_frames/Operacionescombinadas01PRIMARIAunicoos-UWkvBSCBOIY_preprocessed_frame_19803.wav"
+                    ]
 
         try:
             ID = self.list_IDs[index]
