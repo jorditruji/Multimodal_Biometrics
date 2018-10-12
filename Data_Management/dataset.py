@@ -65,7 +65,7 @@ class Dataset(data.Dataset):
         # Some preprocessing
         #if self.preprocessing:
         wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
-        wav_data = self.pre_emphasize(wav_data)
+        #wav_data = self.pre_emphasize(wav_data)
         #MFCC extraction
         if self.mfcc:
             try:

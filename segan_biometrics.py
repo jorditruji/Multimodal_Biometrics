@@ -101,6 +101,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 				# statistics
 				running_loss += loss.item() * local_batch.size(0)
 				running_corrects += torch.sum(preds == local_labels.data)
+				dataseize+= local_batch.size(0)
+
 
 			epoch_loss = running_loss / dataseize
 			epoch_acc = running_corrects.double() / dataseize
