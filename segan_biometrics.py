@@ -62,17 +62,17 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			with torch.set_grad_enabled(True):
 				outputs = model(local_batch)
 				_, preds = torch.max(outputs, 1)
-				print outputs,preds
+				print outputs,local_labels
 				loss = criterion(outputs, local_labels)
 				# backward + optimize only if in training phase
 				loss.backward()
 				optimizer.step()
-			# statistics
-			running_loss += loss.item() * local_batch.size(0)
-			dataseize+= local_batch.size(0)
-			running_corrects += torch.sum(preds == local_labels.data)
-			sys.stdout.write('\r%s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item())),
-			sys.stdout.flush()
+				# statistics
+				running_loss += loss.item() * local_batch.size(0)
+				dataseize+= local_batch.size(0)
+				running_corrects += torch.sum(preds == local_labels.data)
+				sys.stdout.write('\r%s %s %s %s %s %s' % ('Processing training batch: ', cont, '/', training_generator.__len__(),' with loss: ', loss.item())),
+				sys.stdout.flush()
 
 		epoch_loss = running_loss / dataseize
 		epoch_acc = running_corrects.double() / dataseize
