@@ -40,7 +40,7 @@ class ConvNet(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.fc = nn.Sequential(
             #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
-            nn.Linear(288,1024),
+            nn.Linear(192,1024),
             nn.ReLU(),
             nn.Dropout(),
             nn.Linear(1024,num_classes),
