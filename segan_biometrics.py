@@ -107,8 +107,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			epoch_loss = running_loss / dataseize
 			epoch_acc = running_corrects.double() / dataseize
 
-			print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-			    phase, epoch_loss, epoch_acc))
+			print('Val Loss: {:.4f} Acc: {:.4f}'.format( epoch_loss, epoch_acc))
 
 			# deep copy the model
 			if  epoch_acc > best_acc:
