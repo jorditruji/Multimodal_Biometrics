@@ -116,7 +116,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 print device
 
 # Parameters
-params = {'batch_size': 32,
+params = {'batch_size': 64,
           'shuffle': True,
           'num_workers': 6}
 
@@ -145,7 +145,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer_ft = optim.Adagrad(model_ft.parameters(), lr=0.001, lr_decay=0)
 
 # Decay LR by a factor of 0.5 every ? epochs -
-exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=15, gamma=0.1)
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 model_ft = train_model(model_ft, criterion, optimizer_ft,exp_lr_scheduler, num_epochs=50)
 
 
