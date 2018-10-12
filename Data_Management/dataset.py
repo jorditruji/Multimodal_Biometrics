@@ -68,15 +68,14 @@ class Dataset(data.Dataset):
         #wav_data = self.pre_emphasize(wav_data)
         #MFCC extraction
         if self.mfcc:
-            try:
-                mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
-                mfcc_matric=mfcc_matric.astype(np.float)
-                mfcc_matric=mfcc_matric/np.max(np.abs(mfcc_matric))
-                print "mfcc"
-                print mfcc_matric
-                return mfcc_matric,y
-            except:
-                return
+            
+            mfcc_matric=librosa.feature.mfcc(wav_data,fm,n_mfcc=64)
+            mfcc_matric=mfcc_matric.astype(np.float)
+            mfcc_matric=mfcc_matric/np.max(np.abs(mfcc_matric))
+            print "mfcc"
+            print mfcc_matric
+            return mfcc_matric,y
+
 
         return wav_data, y
 
@@ -91,7 +90,6 @@ class Dataset(data.Dataset):
             np.save('/work/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy', self.forbidden, allow_pickle=True, fix_imports=True)
         try:
             x_n = x / imax
-            print x_n
             return x_n
         except:
             return
