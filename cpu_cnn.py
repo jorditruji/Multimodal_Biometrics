@@ -66,6 +66,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			loss = criterion(outputs, local_labels)
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
+			a = list(model.parameters()).clone()
 
 			loss.backward()
 			'''
@@ -74,6 +75,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			'''
 			optimizer.step()
 			scheduler.step()
+			b = list(model.parameters()).clone()
+			print torch.equal(a.data, b.data)
 			
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
@@ -106,6 +109,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 			outputs,i = model(local_batch)
 			_, preds = torch.max(outputs, 1)
+
 			loss = criterion(outputs, local_labels)
 
 
