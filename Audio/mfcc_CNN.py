@@ -128,7 +128,16 @@ class MiniConvNet2(nn.Module):
 			nn.BatchNorm2d(256),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=(2,4)))
-
+		self.layer4 = nn.Sequential(
+			nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=2),
+			nn.BatchNorm2d(256),
+			nn.ReLU(),
+			nn.MaxPool2d(kernel_size=(2,4)))
+		self.layer5 = nn.Sequential(
+			nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=2),
+			nn.BatchNorm2d(256),
+			nn.ReLU(),
+			nn.MaxPool2d(kernel_size=(2,4)))
 		self.fc = nn.Sequential(
 			nn.Linear(120,512),
 			nn.ReLU(),
