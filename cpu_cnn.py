@@ -40,10 +40,10 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 	model = model.to(device)
 	max_epochs=50
+	model.train()
 	#Loop over epochs
 	for epoch in range(max_epochs):
 		print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-		model.train()  # Set model to training mode
 		# Training
 		dataseize=0
 		cont=0
