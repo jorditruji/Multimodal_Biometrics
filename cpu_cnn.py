@@ -71,7 +71,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 			for i,param in enumerate(model.parameters()):
 				if i>5:
-					print i, param.grad.data
+					print i, param.grad.data.sum()
 
 			optimizer.step()
 			scheduler.step()
