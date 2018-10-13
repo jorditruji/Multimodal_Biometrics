@@ -55,7 +55,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 			running_loss = 0.0
 			running_corrects = 0
-
+			optimizer.zero_grad()
 
 			# forward + shapes modification...
 			local_batch=local_batch.unsqueeze_(1)
@@ -65,21 +65,17 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			loss = criterion(outputs, local_labels)
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
-			optimizer.zero_grad()
 
 			a = list(model.parameters())[0].clone()
 			loss.backward()
 
 			for i,param in enumerate(model.parameters()):
 				if i>5:
-					print i,param	
+					print i, param.grad.data
 
 			optimizer.step()
 			scheduler.step()
-			optimizer.zero_grad()
-			for i,param in enumerate(model.parameters()):
-				if i>5:
-					print i,param			
+			
 			b = list(model.parameters())[0].clone()
 			print torch.equal(a.data, b.data)
 
