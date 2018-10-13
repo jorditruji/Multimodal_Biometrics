@@ -136,10 +136,10 @@ class MiniConvNet2(nn.Module):
 			nn.MaxPool2d(kernel_size=(4,2)))
 
 		self.fc = nn.Sequential(
-			nn.Linear(96,1024),
+			nn.Linear(96,124),
 			nn.ReLU(),
 			nn.Dropout(),
-			nn.Linear(1024,num_classes),
+			nn.Linear(124,num_classes),
 			torch.nn.Softmax())
 
 	def forward(self, x):
