@@ -112,6 +112,7 @@ class MiniConvNet2(nn.Module):
 	def __init__(self, num_classes=27):
 		super(MiniConvNet2, self).__init__()
 		self.layer1 = nn.Sequential(
+			nn.BatchNorm2d(1),
 			nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=2),
 			nn.BatchNorm2d(16),
             nn.ReLU(),
