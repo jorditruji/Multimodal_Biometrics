@@ -7,36 +7,10 @@ from torch.nn.modules.utils import _single
 import json
 from torch.autograd import Variable
 import numpy as np
-
+from utils import Concat_embed
 import pdb
 from models.spectral_norm import SpectralNorm
 import os
-
-class Concat_embed(nn.Module):
-
-    def __init__(self, embed_dim, projected_embed_dim, dataset='youtubers'):
-        super(Concat_embed, self).__init__()
-        if dataset != 'youtubers':
-            self.projection = nn.Sequential(
-                nn.Linear(in_features=embed_dim, out_features=projected_embed_dim),
-                nn.BatchNorm1d(num_features=projected_embed_dim),
-                nn.LeakyReLU(negative_slope=0.2, inplace=True)
-                )
-        else:
-            self.projection = nn.Sequential(
-                nn.Linear(in_features=62, out_features=projected_embed_dim),
-                nn.BatchNorm1d(num_features=projected_embed_dim),
-                nn.LeakyReLU(negative_slope=0.2, inplace=True)
-            )
-
-    def forward(self, inp, projected_embed):
-        #projected_embed = self.projection(embed)
-
-        replicated_embed = projected_embed.repeat(1, 1, 4, 4)#.permute(2, 3, 0, 1)
-        #print(inp)
-        hidden_concat = torch.cat([inp, replicated_embed], 1)
-
-        return hidden_concat
 
 
 class Saver(object):
@@ -906,3 +880,4 @@ class generator(nn.Module):
         if not project and not only_wav:
             projected_embed = embed_vector
         return output, projected_embed
+
