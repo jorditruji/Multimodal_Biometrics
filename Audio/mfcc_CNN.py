@@ -110,7 +110,7 @@ class MiniConvNet(nn.Module):
 # Convolutional neural network (4 convolutional layers)
 class MiniConvNet2(nn.Module):
 	def __init__(self, num_classes=27):
-		super(MiniConvNet, self).__init__()
+		super(MiniConvNet2, self).__init__()
 		self.layer1 = nn.Sequential(
 			nn.Conv2d(1, 6, kernel_size=3, stride=1, padding=2),
 			nn.BatchNorm2d(6),
