@@ -70,7 +70,7 @@ class Dataset(data.Dataset):
         #MFCC extraction
         if self.mfcc:
             
-            mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=12)
+            mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=16)
             mfcc_matric=(mfcc_matric - np.mean(mfcc_matric)) / np.std(mfcc_matric)
             print mfcc_matric.shape
             return mfcc_matric,y

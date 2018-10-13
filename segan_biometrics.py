@@ -67,6 +67,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
 			optimizer.zero_grad()
+			for param in model.parameters():
+				print(param.grad.data.sum())
 			a = list(model.parameters())[0].clone()
 			loss.backward()
 
@@ -165,7 +167,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 
-model = ConvNet(num_classes=27).to(device)
+model = MiniConvNet(num_classes=27).to(device)
 
 model_ft = model.to(device)
 
