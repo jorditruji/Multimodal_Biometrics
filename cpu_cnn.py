@@ -64,7 +64,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			outputs = model(local_batch)
 			print "segan outs:"
 			print outputs
-			peint "segan embed shape"
+			print "segan embed shape"
 			outputs.shape
 			_, preds = torch.max(outputs, 1)
 			loss = criterion(outputs, local_labels)
