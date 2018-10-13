@@ -46,7 +46,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		dataseize=0
 		cont=0
 
-
+		running_loss = 0.0
+		running_corrects = 0
 		for local_batch, local_labels in training_generator:
 
 			cont+=1
@@ -54,36 +55,26 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 			# Model computations
 
-			running_loss = 0.0
-			running_corrects = 0
-			#optimizer.zero_grad()
+
+			optimizer.zero_grad()
 
 			# forward + shapes modification...
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.FloatTensor)
 			outputs,int_act = model(local_batch)
-
-			print "segan embed shape"
-			print outputs.shape
 			_, preds = torch.max(outputs, 1)
 			loss = criterion(outputs, local_labels)
-
-			print loss
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
 
-			a = list(model.parameters())[0].clone()
 			loss.backward()
-
+			'''
 			for i,param in enumerate(model.parameters()):
 				print "\n",i, param.grad.data.sum()
-
+			'''
 			optimizer.step()
 			scheduler.step()
 			
-			b = list(model.parameters())[0].clone()
-			print torch.equal(a.data, b.data)
-
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
@@ -113,7 +104,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.FloatTensor)
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-			outputs = model(local_batch)
+			outputs,i = model(local_batch)
 			_, preds = torch.max(outputs, 1)
 			loss = criterion(outputs, local_labels)
 
@@ -127,7 +118,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			acc=float(corrects)/float(total)
 			sys.stdout.write('\r%s %s %s %s %s %s %s %s' % ('Processing val batch: ', cont, '/', validation_generator.__len__(),' with loss: ', loss.item(),' and acc: ',acc)),
 			sys.stdout.flush()
-			break
+
 
 		epoch_loss = running_loss / dataseize
 		epoch_acc = running_corrects.double() / dataseize
@@ -179,7 +170,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.SGD(model_ft.parameters(),  lr = 0.001, momentum=0.9)
+optimizer_ft = optim.Adam(model_ft.parameters())
 
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
