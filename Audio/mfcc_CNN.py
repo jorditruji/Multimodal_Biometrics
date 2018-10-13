@@ -113,19 +113,19 @@ class MiniConvNet2(nn.Module):
 		super(MiniConvNet2, self).__init__()
 		self.layer1 = nn.Sequential(
 			nn.Conv2d(1, 64, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(6),
+			nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=(1,2), stride=2))
 
 		self.layer2 = nn.Sequential(
 			nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=2),
 			nn.Dropout(0.5),
-			nn.BatchNorm2d(12),
+			nn.BatchNorm2d(128),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=(2,4), stride=2))
 		self.layer3 = nn.Sequential(
 			nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(12),
+			nn.BatchNorm2d(256),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=(2,4), stride=2))
 
