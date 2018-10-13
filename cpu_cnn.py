@@ -62,8 +62,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.FloatTensor)
 			outputs,int_act = model(local_batch)
-			print "segan outs:"
-			print outputs
+
 			print "segan embed shape"
 			print outputs.shape
 			_, preds = torch.max(outputs, 1)
@@ -75,7 +74,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			loss.backward()
 
 			for i,param in enumerate(model.parameters()):
-				print "\n",i, param.grad.data.sum()
+				print ""#\n",i, param.grad.data.sum()
 
 			optimizer.step()
 			scheduler.step()
