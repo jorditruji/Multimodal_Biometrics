@@ -71,14 +71,16 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			a = list(model.parameters())[0].clone()
 			loss.backward()
 
-			for param in model.parameters()[0]:
-				print(param)
+			for i,param in enumerate(model.parameters()):
+				if i<2:
+					i,print(param)
 
 			optimizer.step()
 			scheduler.step()
 			optimizer.zero_grad()
-			for param in model.parameters()[0]:
-				print(param)			
+			for i,param in enumerate(model.parameters()):
+				if i<2:
+					i,print(param)			
 			b = list(model.parameters())[0].clone()
 			print torch.equal(a.data, b.data)
 
