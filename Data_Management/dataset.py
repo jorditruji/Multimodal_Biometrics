@@ -41,7 +41,7 @@ class Dataset(data.Dataset):
 
         # Select sample
         ID = self.list_IDs[index]
-        y=self.labels[ID]
+
         #Problems with empty wav files... if we find a forbidden we will get another random sample
         correct_sample=False
         while correct_sample ==False:
@@ -61,7 +61,7 @@ class Dataset(data.Dataset):
                 index=index+1
                 ID = self.list_IDs[index]
 
-        
+        y=self.labels[ID]        
         
         # Some preprocessing
         #if self.preprocessing:

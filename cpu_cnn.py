@@ -67,6 +67,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			print outputs.shape
 			_, preds = torch.max(outputs, 1)
 			loss = criterion(outputs, local_labels)
+
+			print loss
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
 
@@ -152,7 +154,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 print device
 
 # Parameters
-params = {'batch_size': 12,
+params = {'batch_size': 64,
           'shuffle': True,
           'num_workers': 6}
 
@@ -177,7 +179,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.SGD(model_ft.parameters(),  lr = 0.01, momentum=0.9)
+optimizer_ft = optim.SGD(model_ft.parameters(),  lr = 0.001, momentum=0.9)
 
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)

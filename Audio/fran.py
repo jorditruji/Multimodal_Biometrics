@@ -558,9 +558,7 @@ class Discriminator(Model):
                 self.fc = nn.Sequential(
                     nn.Linear(16384, 256),
                     nn.ReLU(inplace=True),
-                    nn.Linear(256, 128),
-                    nn.ReLU(inplace=True),
-                    nn.Linear(128, 27),
+                    nn.Linear(256, 27),
                     nn.Softmax()
                 )
             else:
@@ -569,8 +567,7 @@ class Discriminator(Model):
                     nn.PReLU(256),
                     nn.Linear(256, 128),
                     nn.PReLU(128),
-                    nn.Linear(128, 27),
-                    nn.Softmax()
+                    nn.Linear(128, 128)
                 )
         elif pool_type == 'rnn':
             if bnorm:
