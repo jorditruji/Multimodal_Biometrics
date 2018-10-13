@@ -112,28 +112,23 @@ class MiniConvNet2(nn.Module):
 	def __init__(self, num_classes=27):
 		super(MiniConvNet2, self).__init__()
 		self.layer1 = nn.Sequential(
-			nn.Conv2d(1, 6, kernel_size=3, stride=1, padding=2),
+			nn.Conv2d(1, 64, kernel_size=3, stride=1, padding=2),
 			nn.BatchNorm2d(6),
-            nn.ReLU())
-            #nn.MaxPool2d(kernel_size=2, stride=2))
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=(1,2), stride=2))
 
 		self.layer2 = nn.Sequential(
-			nn.Conv2d(6, 12, kernel_size=3, stride=1, padding=2),
+			nn.Conv2d(6, 128, kernel_size=3, stride=1, padding=2),
 			nn.Dropout(0.5),
 			nn.BatchNorm2d(12),
 			nn.ReLU(),
-			nn.MaxPool2d(kernel_size=2, stride=2))
+			nn.MaxPool2d(kernel_size=(2,4), stride=2))
 		self.layer3 = nn.Sequential(
-			nn.Conv2d(12, 12, kernel_size=3, stride=1, padding=2),
+			nn.Conv2d(12, 256, kernel_size=3, stride=1, padding=2),
 			nn.BatchNorm2d(12),
-			nn.ReLU())
-			#nn.MaxPool2d(kernel_size=2, stride=2))
-		self.layer4 = nn.Sequential(
-			nn.Conv2d(12, 12, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(12),
-			nn.ReLU(),
-			nn.MaxPool2d(kernel_size=2, stride=2))
-			#nn.AvgPool2d(kernel_size=3, stride=4, padding=0))
+			nn.ReLU()
+			nn.MaxPool2d(kernel_size=(2,4), stride=2))
+
 		self.fc = nn.Sequential(
 			nn.Linear(120,512),
 			nn.ReLU(),
@@ -142,10 +137,10 @@ class MiniConvNet2(nn.Module):
 			torch.nn.Softmax())
 
 	def forward(self, x):
+		print x.size()
 		out = self.layer1(x)
 		out = self.layer2(out)
 		out = self.layer3(out)
-		out = self.layer4(out)
 		out = out.reshape(out.size(0), -1)
 		out = self.fc(out)
 		return out
