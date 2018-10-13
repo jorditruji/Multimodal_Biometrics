@@ -13,6 +13,8 @@ from Audio.fran import Discriminator
 import string
 import sys
 import numpy as np
+from torch.autograd import Variable
+
 
 # Get model nu,ber of params
 def get_n_params(model):
@@ -55,7 +57,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 			# Model computations
 
-
+			local_batch, local_labels=Variable(local_batch), Variable(local_labels)
 			optimizer.zero_grad()
 
 			# forward + shapes modification...
