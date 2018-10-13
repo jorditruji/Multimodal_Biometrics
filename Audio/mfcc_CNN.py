@@ -140,7 +140,7 @@ class MiniConvNet2(nn.Module):
 			nn.ReLU(),
 			nn.Dropout(),
 			nn.Linear(124,num_classes),
-			torch.nn.Softmax())
+			torch.nn.Sigmoid())
 
 	def forward(self, x):
 		print torch.max(x)
