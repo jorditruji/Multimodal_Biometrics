@@ -112,25 +112,25 @@ class MiniConvNet2(nn.Module):
 	def __init__(self, num_classes=27):
 		super(MiniConvNet2, self).__init__()
 		self.layer1 = nn.Sequential(
-			nn.Conv2d(1, 64, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(64),
+			nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=2),
+			nn.BatchNorm2d(16),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2,4)))
 
 		self.layer2 = nn.Sequential(
-			nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=2),
+			nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=2),
 			nn.Dropout(0.5),
-			nn.BatchNorm2d(128),
+			nn.BatchNorm2d(32),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=(2,4)))
 		self.layer3 = nn.Sequential(
-			nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(256),
+			nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=2),
+			nn.BatchNorm2d(64),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=(2,4)))
 		self.layer4 = nn.Sequential(
-			nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(256),
+			nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=2),
+			nn.BatchNorm2d(64),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=(1,2)))
 
