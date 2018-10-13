@@ -66,7 +66,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			loss = criterion(outputs, local_labels)
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
-			a = list(model.parameters()).clone()
+			a = list(model.parameters())[15].clone()
 
 			loss.backward()
 			'''
@@ -75,7 +75,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			'''
 			optimizer.step()
 			scheduler.step()
-			b = list(model.parameters()).clone()
+			b = list(model.parameters())[15].clone()
 			print torch.equal(a.data, b.data)
 			
 			# statistics
