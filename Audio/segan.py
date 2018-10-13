@@ -1,5 +1,270 @@
 
+def feature_extract(nn.Module):
+    def __init__(slef, n_inputs, fmaps):
+        self.d_fmaps = [16, 32, 128, 256, 512, 1024]
+        self.extractor = Discriminator(1, self.d_fmaps, 15, nn.LeakyReLU(0.3))
 
+
+
+
+class Generator(Model):
+    def __init__(self, ninputs, enc_fmaps, kwidth,
+                 activations, bnorm=False, dropout=0.,
+                 pooling=4, z_dim=1024, z_all=False,
+                 skip=True, skip_blacklist=[],
+                 dec_activations=None, cuda=False,
+                 bias=False, aal=False, wd=0.,
+                 core2d=False, core2d_kwidth=None,
+                 core2d_felayers=1,
+                 skip_mode='concat'):
+        # aal: anti-aliasing filter prior to each striding conv in enc
+        super(Generator, self).__init__()
+        self.skip_mode = skip_mode
+        self.skip = skip
+        self.z_dim = z_dim
+        self.z_all = z_all
+        self.do_cuda = cuda
+        self.core2d = core2d
+        self.wd = wd
+        self.skip_blacklist = skip_blacklist
+        if core2d_kwidth is None:
+            core2d_kwidth = kwidth
+        self.gen_enc = nn.ModuleList()
+        if aal:
+            # Make cheby1 filter to include into pytorch conv blocks
+            from scipy.signal import cheby1, dlti, dimpulse
+            system = dlti(*cheby1(8, 0.05, 0.8 / 2))
+            tout, yout = dimpulse(system)
+            filter_h = yout[0]
+            self.filter_h = filter_h
+        else:
+            self.filter_h = None
+
+        if isinstance(activations, str):
+            activations = getattr(nn, activations)()
+        if not isinstance(activations, list):
+            activations = [activations] * len(enc_fmaps)
+        # always begin with 1D block
+        for layer_idx, (fmaps, act) in enumerate(zip(enc_fmaps,
+                                                     activations)):
+            if layer_idx == 0:
+                inp = ninputs
+            else:
+                inp = enc_fmaps[layer_idx - 1]
+            if core2d:
+                if layer_idx < core2d_felayers:
+                    self.gen_enc.append(GBlock(inp, fmaps, kwidth, act,
+                                               padding=None, bnorm=bnorm,
+                                               dropout=dropout, pooling=pooling,
+                                               enc=True, bias=bias,
+                                               aal_h=self.filter_h))
+                else:
+                    if layer_idx == core2d_felayers:
+                        # fmaps is 1 after conv1d blocks
+                        inp = 1
+                    self.gen_enc.append(G2Block(inp, fmaps, core2d_kwidth, act,
+                                                padding=None, bnorm=bnorm,
+                                                dropout=dropout, pooling=pooling,
+                                                enc=True, bias=bias))
+            else:
+                self.gen_enc.append(GBlock(inp, fmaps, kwidth, act,
+                                           padding=None, snorm=bnorm,
+                                           dropout=dropout, pooling=pooling,
+                                           enc=True, bias=bias,
+                                           aal_h=self.filter_h))
+        dec_inp = enc_fmaps[-1]
+        if self.core2d:
+            # dec_fmaps = enc_fmaps[::-1][1:-2]+ [1, 1]
+            dec_fmaps = enc_fmaps[::-1][:-2] + [1, 1]
+        else:
+            dec_fmaps = enc_fmaps[::-1][1:] + [1]
+            # print(dec_fmaps)
+        # print(enc_fmaps)
+        # print('dec_fmaps: ', dec_fmaps)
+        self.gen_dec = nn.ModuleList()
+        if dec_activations is None:
+            dec_activations = activations
+
+        dec_inp += z_dim
+
+        for layer_idx, (fmaps, act) in enumerate(zip(dec_fmaps,
+                                                     dec_activations)):
+            if skip and layer_idx > 0 and layer_idx not in skip_blacklist:
+                # print('Adding skip conn input of idx: {} and size:'
+                #      ' {}'.format(layer_idx, dec_inp))
+                if self.skip_mode == 'concat':
+                    dec_inp += enc_fmaps[-(layer_idx + 1)]
+
+            if z_all and layer_idx > 0:
+                dec_inp += z_dim
+
+            if layer_idx >= len(dec_fmaps) - 1:
+                # act = None #nn.Tanh()
+                act = nn.Tanh()
+                bnorm = False
+                dropout = 0
+
+            if layer_idx < len(dec_fmaps) - 1 and core2d:
+                self.gen_dec.append(G2Block(dec_inp,
+                                            fmaps, core2d_kwidth + 1, act,
+                                            padding=core2d_kwidth // 2,
+                                            bnorm=bnorm,
+                                            dropout=dropout, pooling=pooling,
+                                            enc=False,
+                                            bias=bias))
+            else:
+                if layer_idx == len(dec_fmaps) - 1:
+                    # after conv2d channel condensation, fmaps mirror the ones
+                    # extracted in 1D encoder
+                    dec_inp = enc_fmaps[0]
+                    if skip and layer_idx not in skip_blacklist:
+                        dec_inp += enc_fmaps[-(layer_idx + 1)]
+                self.gen_dec.append(GBlock(dec_inp,
+                                           fmaps, kwidth + 1, act,
+                                           padding=kwidth // 2,
+                                           snorm=bnorm,
+                                           dropout=dropout, pooling=pooling,
+                                           enc=False,
+                                           bias=bias))
+            dec_inp = fmaps
+        self.load_pretrained('weights_EOE_G-Generator1D-61101.ckpt', load_last=True)
+        self.fc = nn.Sequential(
+            nn.Linear(16384, 256),
+            nn.PReLU(256),
+            nn.Linear(256, 128),
+            nn.PReLU(128),
+            nn.Linear(128, 128)
+        )
+    def forward(self, x, z=None):
+        hi = x
+        skips = []
+        for l_i, enc_layer in enumerate(self.gen_enc):
+            hi, _ = enc_layer(hi)
+            # print('ENC {} hi size: {}'.format(l_i, hi.size()))
+            if self.skip and l_i < (len(self.gen_enc) - 1):
+                # print('Appending skip connection')
+                skips.append(hi)
+                # print('hi size: ', hi.size())
+        # print('=' * 50)
+        skips = skips[::-1]
+        if z is None:
+            # make z
+            # z = Variable(torch.randn(x.size(0), self.z_dim, hi.size(2)))
+            # z = Variable(torch.randn(*hi.size()))
+            z = Variable(torch.randn(hi.size(0), self.z_dim,
+                                     *hi.size()[2:]).float()).cuda()
+        if len(z.size()) != len(hi.size()):
+            raise ValueError('len(z.size) {} != len(hi.size) {}'
+                             ''.format(len(z.size()), len(hi.size())))
+        if self.do_cuda:
+            z = z.cuda()
+        if not hasattr(self, 'z'):
+            self.z = z
+        hi = hi.view(hi.size(0), -1)
+        hi = self.fc(hi)
+        """# print('z size: ', z.size())
+        hi = torch.cat((hi, z), dim=1)
+        # print('Input to dec after concating z and enc out: ', hi.size())
+        # print('Enc out size: ', hi.size())
+        z_up = z
+        for l_i, dec_layer in enumerate(self.gen_dec):
+            print(l_i)
+            # print('dec layer: {} with input: {}'.format(l_i, hi.size()))
+            # print('DEC in size: ', hi.size())
+            if self.skip and l_i > 0 and l_i not in self.skip_blacklist:
+                skip_conn = skips[l_i - 1]
+                # print('concating skip {} to hi {}'.format(skip_conn.size(),
+                #                                          hi.size()))
+                hi = self.skip_merge(skip_conn, hi)
+                # print('Merged hi: ', hi.size())
+                # hi = torch.cat((hi, skip_conn), dim=1)
+            if l_i > 0 and self.z_all:
+                # concat z in every layer
+                # print('z.size: ', z.size())
+                z_up = torch.cat((z_up, z_up), dim=2)
+                hi = torch.cat((hi, z_up), dim=1)
+            hi = dec_layer(hi)
+            # print('-' * 20)
+            # print('hi size: ', hi.size())"""
+        return hi
+
+class generator(nn.Module):
+
+    def __init__(self, dataset='youtubers'):
+        super(generator, self).__init__()
+        self.image_size = 64
+        self.num_channels = 3
+        self.noise_dim = 100
+        self.embed_dim = 62
+        self.projected_embed_dim = 128
+        self.raw_wav_dim = 64000
+        self.latent_dim = self.projected_embed_dim
+        self.dataset_name = dataset
+        self.projection = nn.Sequential(
+            nn.Linear(in_features=self.embed_dim, out_features=self.projected_embed_dim),
+            nn.BatchNorm1d(num_features=self.projected_embed_dim),
+            nn.LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+        #self.d_fmaps = [64, 128, 256, 512, 1024, 1024]
+        self.d_fmaps = [16, 32, 128, 256, 512, 1024]
+        self.act = [nn.PReLU(fmaps) for fmaps in [64, 128, 256, 512, 1024, 1024]]
+        self.audio_embedding = Discriminator(1, self.d_fmaps, 15, nn.LeakyReLU(0.3))
+        #self.audio_embedding = Generator(1, self.d_fmaps, 31, self.act)
+        self.ngf = 64
+
+        # based on: https://github.com/pytorch/examples/blob/master/dcgan/main.py
+        self.netG = nn.Sequential(
+            SpectralNorm(nn.ConvTranspose2d(self.latent_dim, self.ngf * 8, 4, 1, 0, bias=False)),
+            #nn.BatchNorm2d(self.ngf * 8),
+            nn.Dropout(),
+            nn.ReLU(True),
+            # state size. (ngf*8) x 4 x 4
+            SpectralNorm(nn.ConvTranspose2d(self.ngf * 8, self.ngf * 4, 4, 2, 1, bias=False)),
+            nn.Dropout(),
+            #nn.BatchNorm2d(self.ngf * 4),
+            nn.ReLU(True),
+            # state size. (ngf*4) x 8 x 8
+            SpectralNorm(nn.ConvTranspose2d(self.ngf * 4, self.ngf * 2, 4, 2, 1, bias=False)),
+            nn.Dropout(),
+            #nn.BatchNorm2d(self.ngf * 2),
+            nn.ReLU(True),
+            # state size. (ngf*2) x 16 x 16
+            SpectralNorm(nn.ConvTranspose2d(self.ngf * 2,self.ngf, 4, 2, 1, bias=False)),
+            #nn.BatchNorm2d(self.ngf),
+            nn.Dropout(),
+            nn.ReLU(True),
+            # state size. (ngf) x 32 x 32
+            SpectralNorm(nn.ConvTranspose2d(self.ngf, self.num_channels, 4, 2, 1, bias=False)),
+            #nn.Dropout2d(),
+            nn.Tanh()
+             # state size. (num_channels) x 64 x 64
+            )
+
+
+
+
+    def forward(self, raw_wav, embed_vector, z, aux_z, project=False, only_wav=True):
+        #melspec = raw_wav.view(raw_wav.size(0), -1).unsqueeze(1)
+        #y, wav_embedding = self.audio_embedding(melspec)
+        y, wav_embedding = self.audio_embedding(raw_wav.unsqueeze(1))
+        #y = self.audio_embedding(raw_wav.unsqueeze(1))
+        if self.dataset_name == 'youtubers' and not project:
+            if not only_wav:
+                padding = Variable(torch.cuda.FloatTensor(embed_vector.data.shape[0], self.projected_embed_dim - 62).fill_(
+                    0).float()).cuda()
+                projected_embed = torch.cat([embed_vector, padding, y], 1).unsqueeze(2).unsqueeze(3)
+                #print(projected_embed.data.shape)
+            else:
+                projected_embed = y.unsqueeze(2).unsqueeze(3)
+        else:
+            projected_embed = self.projection(embed_vector)
+            projected_embed = torch.cat([projected_embed, y], 1).unsqueeze(2).unsqueeze(3)
+        #latent_vector = torch.cat([projected_embed, z], 1)
+        latent_vector = projected_embed
+        output = self.netG(latent_vector)
+        if not project and not only_wav:
+            projected_embed = embed_vector
+        return output, projected_embed
 
 class Conv1DResBlock(nn.Module):
 

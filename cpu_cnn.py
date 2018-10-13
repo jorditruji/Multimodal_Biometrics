@@ -9,6 +9,7 @@ from torch.optim import lr_scheduler
 import time
 import copy
 from Audio.mfcc_CNN import MiniConvNet, ConvNet, MiniConvNet2
+from Audio.fran import Discriminator
 import string
 import sys
 import numpy as np
@@ -164,8 +165,8 @@ validation_set = Dataset(partition['validation'], labels)
 validation_generator = data.DataLoader(validation_set, **params)
 
 
-
-model = MiniConvNet2(num_classes=27).to(device)
+d_fmaps = [16, 32, 128, 256, 512, 1024]
+model = Discriminator(1, d_fmaps, 15, nn.LeakyReLU(0.3))
 
 model_ft = model.to(device)
 
