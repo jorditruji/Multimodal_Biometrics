@@ -65,7 +65,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			print "segan outs:"
 			print outputs
 			peint "segan embed shape"
-			outputs.size()
+			outputs.shape
 			_, preds = torch.max(outputs, 1)
 			loss = criterion(outputs, local_labels)
 			# backward + optimize only if in training phase
