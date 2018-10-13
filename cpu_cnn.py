@@ -55,7 +55,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 			running_loss = 0.0
 			running_corrects = 0
-			optimizer.zero_grad()
+			#optimizer.zero_grad()
 
 			# forward + shapes modification...
 			local_batch=local_batch.unsqueeze_(1)
