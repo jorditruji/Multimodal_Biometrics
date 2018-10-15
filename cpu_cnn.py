@@ -62,8 +62,10 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.cuda.FloatTensor)
 			outputs = model(local_batch)
+			print "outputs", outputs
+			print "labels", local_labels
 			_, preds = torch.max(outputs, 1)
-			loss = criterion(outputs, local_labels).cuda()
+			loss = criterion(outputs, local_labels)
 
 
 			# backward + optimize only if in training phase
