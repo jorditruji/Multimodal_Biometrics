@@ -67,14 +67,14 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
 			optimizer.zero_grad()
-			a = list(model.parameters()).clone()
+			a = list(model.parameters())[0].clone()
 			loss.backward()
 
 			for param in model.parameters():
 				print(param.grad.data.sum())
 			optimizer.step()
 			scheduler.step()
-			b = list(model.parameters()).clone()
+			b = list(model.parameters())[0].clone()
 			print torch.equal(a.data, b.data)
 
 			# statistics

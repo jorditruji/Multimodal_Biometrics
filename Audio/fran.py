@@ -556,8 +556,9 @@ class Discriminator(Model):
             pool_size *= d_fmaps[-1]
             if isinstance(act, nn.LeakyReLU):
                 self.fc = nn.Sequential(
-                    nn.Linear(16384, 256),
+                    nn.Linear(16384, 1024),
                     nn.ReLU(inplace=True),
+                    nn.Dropout(),
                     nn.Linear(256, 27),
                     nn.Softmax()
                 )
