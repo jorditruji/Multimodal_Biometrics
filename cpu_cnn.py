@@ -179,7 +179,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.Adam(model_ft.parameters(),lr=0.0002, weight_decay=5e-5)#  L2 regularization
+optimizer_ft = optim.Adam(filter(lambda p: p.requires_grad, model_ft.parameters()),lr=0.001, weight_decay=5e-5)#  L2 regularization
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 model_ft = train_model(model_ft, criterion, optimizer_ft,exp_lr_scheduler, num_epochs=50)
