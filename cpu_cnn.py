@@ -169,7 +169,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
 
-model_ft = models.resnet18(pretrained=True)
+model_ft = models.MiniVGG()
 num_ftrs = model_ft.fc.in_features
 model_ft.fc = nn.Linear(num_ftrs, 27)
 model_ft = model_ft.to(device)
