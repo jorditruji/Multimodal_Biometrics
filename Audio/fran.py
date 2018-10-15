@@ -552,7 +552,7 @@ class Discriminator(Model):
             self.disc = Genc
         self.pool_type = pool_type
         self.classifier=nn.Sequential(
-            nn.BatchNorm1d(128),
+            #nn.BatchNorm1d(128),
             nn.Linear(128,1024),
             nn.ReLU(),
             nn.Dropout(),
@@ -568,7 +568,7 @@ class Discriminator(Model):
                     nn.ReLU(inplace=True),
                     nn.Linear(256, 128),
                     nn.ReLU(inplace=True),
-                    nn.Linear(128, 128)
+                    nn.Linear(128, 27)
                 )
             else:
                 self.fc = nn.Sequential(
@@ -637,7 +637,7 @@ class Discriminator(Model):
         #print(type(h.data))
         y = self.fc(h)
         #print(type(y.data))
-        y=self.classifier(y)
+        #y=self.classifier(y)
         int_act['logit'] = y
         # return F.sigmoid(y), int_act
 
