@@ -10,6 +10,8 @@ import numpy as np
 import librosa
 from python_speech_features import mfcc
 from Audio.hand_crafted_feat import MFCCExtractor
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 printable=set(string.printable)
