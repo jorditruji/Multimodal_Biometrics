@@ -4,7 +4,7 @@ import torch.nn as nn
 
 # Convolutional neural network (two convolutional layers)
 class ConvNet(nn.Module):
-    def __init__(self, num_classes=2):
+    def __init__(self, num_classes=27):
         super(ConvNet, self).__init__()
         self.layer1 = nn.Sequential(
             nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=2),
