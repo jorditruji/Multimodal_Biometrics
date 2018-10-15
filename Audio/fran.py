@@ -559,7 +559,7 @@ class Discriminator(Model):
                     nn.Linear(16384, 256),
                     nn.ReLU(inplace=True),
                     nn.Linear(256, 27),
-                    nn.Softmax()
+                    nn.Sigmoid()
                 )
             else:
                 self.fc = nn.Sequential(
