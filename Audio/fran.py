@@ -600,6 +600,8 @@ class Discriminator(Model):
     def forward(self, x):
         #print("Input: {}".format(x.data.shape))
         h = x
+        print "input"
+        print h.size()
         # store intermediate activations
         int_act = {}
         for ii, layer in enumerate(self.disc):
@@ -607,6 +609,7 @@ class Discriminator(Model):
             h, _ = layer(h)
             #print("After layer: {}".format(h.data.shape))
             int_act['h_{}'.format(ii)] = h
+
         if self.pool_type == 'rnn':
             if hasattr(self, 'ln'):
                 h = self.ln(h)
@@ -623,8 +626,11 @@ class Discriminator(Model):
             h = h.view(h.size(0), -1)
             int_act['avg_conv_h'] = h
         elif self.pool_type == 'none':
+            print "shape before reshape "
             print h.size()
             h = h.view(h.size(0), -1)
+            print "shape after reshape "
+
             print h.size()
         #print("Final h: {}".format(h.data.shape))
         #print(type(h.data))
