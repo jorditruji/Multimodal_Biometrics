@@ -1,6 +1,8 @@
 import pickle
 import numpy as np
 from sklearn.model_selection import train_test_split
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 import string
