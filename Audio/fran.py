@@ -551,16 +551,23 @@ class Discriminator(Model):
             # Genc and Denc MUST be same dimensions
             self.disc = Genc
         self.pool_type = pool_type
+        self.classifier=nn.Sequential(
+            nn.Linear(128,1024),
+            nn.ReLU(),
+            nn.Dropout(),
+            nn.Linear(1024,27),
+            nn.Softmax()
+            )
         if pool_type == 'none':
             # resize tensor to fit into FC directly
             pool_size *= d_fmaps[-1]
             if isinstance(act, nn.LeakyReLU):
                 self.fc = nn.Sequential(
-                    nn.Linear(16384, 1024),
+                    nn.Linear(16384, 256),
                     nn.ReLU(inplace=True),
-                    nn.Dropout(),
-                    nn.Linear(1024, 27),
-                    nn.Softmax()
+                    nn.Linear(256, 128),
+                    nn.ReLU(inplace=True),
+                    nn.Linear(128, 128)
                 )
             else:
                 self.fc = nn.Sequential(
@@ -621,8 +628,10 @@ class Discriminator(Model):
         #print(type(h.data))
         y = self.fc(h)
         #print(type(y.data))
+        y=self.classifier(y)
         int_act['logit'] = y
         # return F.sigmoid(y), int_act
+
         return y, int_act
 
 
