@@ -40,7 +40,7 @@ class Dataset(data.Dataset):
         'Generates one sample of data'
 
         # Select sample
-        ID = self.list_IDs[50]
+        ID = self.list_IDs[index]
 
         #Problems with empty wav files... if we find a forbidden we will get another random sample
         correct_sample=False
