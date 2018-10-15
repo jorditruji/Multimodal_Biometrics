@@ -9,7 +9,7 @@ from data_utils import path_img2wav
 import numpy as np
 import librosa
 from python_speech_features import mfcc
-
+from Audio.hand_crafted_feat import MFCCExtractor
 printable=set(string.printable)
 
 
@@ -63,17 +63,19 @@ class Dataset(data.Dataset):
 
         y=self.labels[ID]        
         
-        # Some preprocessing
-        #if self.preprocessing:
         wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
-        wav_data = self.pre_emphasize(wav_data)
         #MFCC extraction
         if self.mfcc:
-            
-            mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=32)
+            feat_ex= MFCCExtractor(fm)
+            spectogram=feat_ex.extract(wav_data)
+            #mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=32)
             #mfcc_matric=(mfcc_matric - np.mean(mfcc_matric)) / np.std(mfcc_matric)
             return mfcc_matric,y
-
+        else:
+            # Some preprocessing
+            #if self.preprocessing:
+            wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
+            wav_data = self.pre_emphasize(wav_data)            
 
         return wav_data, y
 

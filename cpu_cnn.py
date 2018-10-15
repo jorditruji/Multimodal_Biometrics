@@ -72,7 +72,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 			loss.backward()
 			
-			for i,param in enumerate(model['classifier'].parameters()):
+			for i,param in enumerate(model[''].parameters()):
 				print "\n",i, param.grad.data
 			
 			optimizer.step()
