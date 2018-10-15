@@ -70,7 +70,7 @@ class Dataset(data.Dataset):
             spectogram=feat_ex.extract(wav_data)
             #mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=32)
             #mfcc_matric=(mfcc_matric - np.mean(mfcc_matric)) / np.std(mfcc_matric)
-            return mfcc_matric,y
+            return spectogram,y
         else:
             # Some preprocessing
             #if self.preprocessing:
