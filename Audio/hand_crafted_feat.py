@@ -45,7 +45,6 @@ class MFCCExtractor(object):
             # Power spectrum
             X = abs(fft.fft(frame, self.FFT_SIZE)[:self.FFT_SIZE / 2 + 1]) ** 2
             X[X < POWER_SPECTRUM_FLOOR] = POWER_SPECTRUM_FLOOR  # Avoid zero
-            print X
             # Mel filtering, logarithm, DCT
             #X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)

@@ -107,6 +107,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			# Transfer to GPU
 			# forward + shapes modification...
 			local_batch=local_batch.unsqueeze_(1)
+			print local_batch.size()
 			local_batch=local_batch.type(torch.FloatTensor)
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 			outputs,i = model(local_batch)
@@ -168,7 +169,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
-model = Discriminator(1, d_fmaps, 4, nn.LeakyReLU(0.3))
+model = MiniConvNet()
 
 model_ft = model.to(device)
 
