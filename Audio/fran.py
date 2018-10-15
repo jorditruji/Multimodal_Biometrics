@@ -559,7 +559,7 @@ class Discriminator(Model):
                     nn.Linear(16384, 1024),
                     nn.ReLU(inplace=True),
                     nn.Dropout(),
-                    nn.Linear(256, 27),
+                    nn.Linear(1024, 27),
                     nn.Softmax()
                 )
             else:
