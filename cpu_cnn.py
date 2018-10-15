@@ -51,9 +51,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		running_corrects = 0
 		for local_batch, local_labels in training_generator:
 
-			for p in model.parameters():
-				p.requires_grad = True
-
 			cont+=1
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
@@ -76,8 +73,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			loss.backward()
 			
 			for i,param in enumerate(model.parameters()):
-				print "\n",i, param.grad.data.sum()
-				
+				print "\n",i, param.grad.data
+			
 			optimizer.step()
 			scheduler.step()
 			b = list(model.parameters())[15].clone()
@@ -154,7 +151,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 print device
 
 # Parameters
-params = {'batch_size': 128,
+params = {'batch_size': 64,
           'shuffle': True,
           'num_workers': 6}
 
@@ -179,7 +176,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.Adam(filter(lambda p: p.requires_grad, model_ft.parameters()),lr=0.0001, weight_decay=5e-5)#  L2 regularization
+optimizer_ft = optim.Adam(model_ft.parameters(),lr=1e-3, weight_decay=5e-5)#  L2 regularization
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 model_ft = train_model(model_ft, criterion, optimizer_ft,exp_lr_scheduler, num_epochs=50)
