@@ -106,7 +106,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.FloatTensor)
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
-			outputs,i = model(local_batch)
+			outputs = model(local_batch)
 			_, preds = torch.max(outputs, 1)
 
 			loss = criterion(outputs, local_labels)
