@@ -7,6 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 import time
+from torchvision import models
 import copy
 from Audio.mfcc_CNN import MiniConvNet, ConvNet, MiniConvNet2
 from Audio.fran import Discriminator
