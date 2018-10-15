@@ -61,7 +61,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			# forward + shapes modification...
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.cuda.FloatTensor)
-			outputs,int_act = model(local_batch)
+			outputs = model(local_batch)
 			_, preds = torch.max(outputs, 1)
 			loss = criterion(outputs, local_labels).cuda()
 
