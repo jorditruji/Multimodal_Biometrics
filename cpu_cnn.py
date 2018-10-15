@@ -51,6 +51,9 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		running_corrects = 0
 		for local_batch, local_labels in training_generator:
 
+			for p in self.model.parameters():
+				p.requires_grad = True
+			
 			cont+=1
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
@@ -74,7 +77,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			'''
 			for i,param in enumerate(model.parameters()):
 				print "\n",i, param.grad.data
-			'''
+			'''		
 			optimizer.step()
 			scheduler.step()
 			b = list(model.parameters())[15].clone()
