@@ -1,8 +1,7 @@
 POWER_SPECTRUM_FLOOR = 1e-100
 
 from numpy import *
-import numpy.linalg as linalg
-from utils import cached_func, diff_feature
+
 
 
 def hamming(n):

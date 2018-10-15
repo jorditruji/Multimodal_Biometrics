@@ -2,7 +2,7 @@ import numpy as np
 from torch import nn
 from torch import  autograd
 import torch
-from visualize import VisdomPlotter
+#from visualize import VisdomPlotter
 import os
 import pdb
 import logging
