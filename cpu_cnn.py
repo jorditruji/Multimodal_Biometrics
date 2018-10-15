@@ -47,7 +47,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		# Training
 		dataseize=0
 		cont=0
-
 		running_loss = 0.0
 		running_corrects = 0
 		for local_batch, local_labels in training_generator:
@@ -56,16 +55,17 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
 			# Model computations
-
-			local_batch, local_labels=Variable(local_batch), Variable(local_labels)
 			optimizer.zero_grad()
+			local_batch, local_labels=Variable(local_batch), Variable(local_labels)
 
 			# forward + shapes modification...
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.cuda.FloatTensor)
 			outputs,int_act = model(local_batch)
 			_, preds = torch.max(outputs, 1)
-			loss = criterion(outputs, local_labels)
+			loss = criterion(outputs, local_labels).cuda()
+
+
 			# backward + optimize only if in training phase
 			# zero the parameter gradients
 			a = list(model.parameters())[15].clone()
@@ -176,8 +176,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.Adam(model_ft.parameters())
-
+optimizer_ft = optim.Adam(model_ft.parameters(),lr=1e-3, weight_decay=5e-5)#  L2 regularization
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 model_ft = train_model(model_ft, criterion, optimizer_ft,exp_lr_scheduler, num_epochs=50)
