@@ -552,7 +552,7 @@ class Discriminator(Model):
             self.disc = Genc
         self.pool_type = pool_type
         self.classifier=nn.Sequential(
-            nn.BatchNorm1d(1),
+            nn.BatchNorm1d(128),
             nn.Linear(128,1024),
             nn.ReLU(),
             nn.Dropout(),
