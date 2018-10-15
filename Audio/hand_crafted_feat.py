@@ -16,10 +16,7 @@ class MFCCExtractor(object):
         self.FRAME_LEN = int(float(win_length_ms) / 1000 * fs)
         self.FRAME_SHIFT = int(float(win_shift_ms) / 1000 * fs)
         self.window = hamming(self.FRAME_LEN)
-        self.M, self.CF = self._mel_filterbank()
-
         self.verbose = verbose
-        # The inverse DCT matrix. Change the index to [0:COEFS] if you want to keep the 0-th coefficient
 
     def pre_emphasize(self, x, coef=0.95):
         '''x_emphazied[n]=x[n]- coef*x[n-1]'''
