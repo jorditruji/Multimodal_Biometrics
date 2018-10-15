@@ -9,7 +9,7 @@ from torch.optim import lr_scheduler
 import time
 from torchvision import models
 import copy
-from Audio.mfcc_CNN import MiniConvNet, ConvNet, MiniConvNet2
+from Audio.mfcc_CNN import MiniConvNet, ConvNet, MiniConvNet2, MiniVGG
 from Audio.fran import Discriminator
 import string
 import sys
@@ -169,7 +169,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
 
-model_ft = models.MiniVGG()
+model_ft = MiniVGG()
 num_ftrs = model_ft.fc.in_features
 model_ft.fc = nn.Linear(num_ftrs, 27)
 model_ft = model_ft.to(device)
