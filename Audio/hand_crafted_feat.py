@@ -52,7 +52,6 @@ class MFCCExtractor(object):
         # Show the MFCC spectrum before normalization
         # Mean & variance normalization
         if feature.shape[0] > 1:
-            print "normalize"
             mu = mean(feature, axis=0)
             sigma = std(feature, axis=0)
             feature = (feature - mu) / sigma
