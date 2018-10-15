@@ -80,8 +80,8 @@ class MiniConvNet(nn.Module):
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=2, stride=2))
 		self.layer4 = nn.Sequential(
-			nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=2),
-			nn.BatchNorm2d(12),
+			nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=2),
+			nn.BatchNorm2d(128),
 			nn.ReLU(),
 			nn.MaxPool2d(kernel_size=2, stride=2))
 			#nn.AvgPool2d(kernel_size=3, stride=4, padding=0))
