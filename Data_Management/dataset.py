@@ -71,7 +71,7 @@ class Dataset(data.Dataset):
         #MFCC extraction
         if self.mfcc:
             #feat_ex= MFCCExtractor(fm)
-            Pxx, freqs, bins, im = plt.specgram(wav_data, NFFT=512, Fs=16000, noverlap=240)
+            Pxx, freqs, bins, im = plt.specgram(wav_data, NFFT=256, Fs=16000, noverlap=240)
             #spectogram=feat_ex.extract(wav_data)
             spectogram= np.array(Pxx,dtype=float)
             #mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=32)
