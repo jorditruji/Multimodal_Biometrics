@@ -165,7 +165,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
-model = MiniConvNet()
+model = ConvNet()
 
 model_ft = model.to(device)
 
