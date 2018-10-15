@@ -623,7 +623,9 @@ class Discriminator(Model):
             h = h.view(h.size(0), -1)
             int_act['avg_conv_h'] = h
         elif self.pool_type == 'none':
+            print h.size()
             h = h.view(h.size(0), -1)
+            print h.size()
         #print("Final h: {}".format(h.data.shape))
         #print(type(h.data))
         y = self.fc(h)
