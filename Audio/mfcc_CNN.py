@@ -229,6 +229,15 @@ class BasicBlock(nn.Module):
 		out = self.relu(out)
 
 		return out
+class ReLU(nn.Hardtanh):
+
+    def __init__(self, inplace=False):
+        super(ReLU, self).__init__(0, 20, inplace)
+
+    def __repr__(self):
+        inplace_str = 'inplace' if self.inplace else ''
+        return self.__class__.__name__ + ' (' \
+            + inplace_str + ')'
 
 class DeepSpeakerModel(nn.Module):
     def __init__(self,embedding_size=512,num_classes=27,feature_dim = 64):
