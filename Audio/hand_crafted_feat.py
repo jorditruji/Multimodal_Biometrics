@@ -18,6 +18,7 @@ class MFCCExtractor(object):
         self.window = hamming(self.FRAME_LEN)
         self.M, self.CF = self._mel_filterbank()
         self.n_bands = n_bands
+        
     def pre_emphasize(self, x, coef=0.95):
         '''x_emphazied[n]=x[n]- coef*x[n-1]'''
         if coef <= 0:
@@ -62,28 +63,28 @@ class MFCCExtractor(object):
 
         return feature
 
-        def _mel_filterbank(self):
-            """
-            Return a Mel filterbank matrix as a numpy array.
-            Ref. http://www.ifp.illinois.edu/~minhdo/teaching/speaker_recognition/code/melfb.m
-            """
-            f0 = 700.0 / self.fs
-            fn2 = int(floor(self.FFT_SIZE / 2))
-            lr = log(1 + 0.5 / f0) / (self.n_bands + 1)
-            CF = self.fs * f0 * (exp(arange(1, self.n_bands + 1) * lr) - 1)
-            bl = self.FFT_SIZE * f0 * (exp(array([0, 1, self.n_bands, self.n_bands + 1]) * lr) - 1)
-            b1 = int(floor(bl[0])) + 1
-            b2 = int(ceil(bl[1]))
-            b3 = int(floor(bl[2]))
-            b4 = min(fn2, int(ceil(bl[3]))) - 1
-            pf = log(1 + arange(b1, b4 + 1) / f0 / self.FFT_SIZE) / lr
-            fp = floor(pf)
-            pm = pf - fp
-            M = zeros((self.n_bands, 1 + fn2))
-            for c in xrange(b2 - 1, b4):
-                r = int(fp[c] - 1)
-                M[r, c+1] += 2 * (1 - pm[c])
-            for c in xrange(b3):
-                r = int(fp[c])
-                M[r, c+1] += 2 * pm[c]
-            return M, CF
+    def _mel_filterbank(self):
+        """
+        Return a Mel filterbank matrix as a numpy array.
+        Ref. http://www.ifp.illinois.edu/~minhdo/teaching/speaker_recognition/code/melfb.m
+        """
+        f0 = 700.0 / self.fs
+        fn2 = int(floor(self.FFT_SIZE / 2))
+        lr = log(1 + 0.5 / f0) / (self.n_bands + 1)
+        CF = self.fs * f0 * (exp(arange(1, self.n_bands + 1) * lr) - 1)
+        bl = self.FFT_SIZE * f0 * (exp(array([0, 1, self.n_bands, self.n_bands + 1]) * lr) - 1)
+        b1 = int(floor(bl[0])) + 1
+        b2 = int(ceil(bl[1]))
+        b3 = int(floor(bl[2]))
+        b4 = min(fn2, int(ceil(bl[3]))) - 1
+        pf = log(1 + arange(b1, b4 + 1) / f0 / self.FFT_SIZE) / lr
+        fp = floor(pf)
+        pm = pf - fp
+        M = zeros((self.n_bands, 1 + fn2))
+        for c in xrange(b2 - 1, b4):
+            r = int(fp[c] - 1)
+            M[r, c+1] += 2 * (1 - pm[c])
+        for c in xrange(b3):
+            r = int(fp[c])
+            M[r, c+1] += 2 * pm[c]
+        return M, CF
