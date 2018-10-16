@@ -15,7 +15,7 @@ import string
 import sys
 import numpy as np
 from torch.autograd import Variable
-
+import time
 
 # Get model nu,ber of params
 def get_n_params(model):
@@ -51,10 +51,11 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		running_loss = 0.0
 		running_corrects = 0
 		for local_batch, local_labels in training_generator:
-
 			cont+=1
 			# Transfer to GPU
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)
+			start_time=time.time()
+
 			# Model computations
 			optimizer.zero_grad()
 			local_batch, local_labels=Variable(local_batch), Variable(local_labels)
@@ -77,7 +78,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			scheduler.step()
 			b = list(model.parameters())[12].clone()
 			print torch.equal(a.data, b.data)
-			
+			print("--- %s seconds for train_batch ---" % (time.time() - start_time))
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
@@ -104,6 +105,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 		for local_batch, local_labels in validation_generator:
 			# Transfer to GPU
 			# forward + shapes modification...
+			ini=time.time()
 			local_batch=local_batch.unsqueeze_(1)
 			local_batch=local_batch.type(torch.FloatTensor)
 			local_batch, local_labels = local_batch.to(device), local_labels.to(device)

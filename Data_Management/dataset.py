@@ -13,7 +13,7 @@ from Audio.hand_crafted_feat import MFCCExtractor
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-
+import time
 printable=set(string.printable)
 
 
@@ -42,7 +42,7 @@ class Dataset(data.Dataset):
 
     def __getitem__(self, index):
         'Generates one sample of data'
-
+        start_time = time.time()
         # Select sample
         ID = self.list_IDs[index]
 
@@ -76,6 +76,7 @@ class Dataset(data.Dataset):
             #spectogram= np.array(Pxx,dtype=float)
             #mfcc_matric=mfcc(wav_data,samplerate=fm,numcep=32)
             #mfcc_matric=(mfcc_matric - np.mean(mfcc_matric)) / np.std(mfcc_matric)
+            print("--- %s seconds ---" % (time.time() - start_time))
             return spectogram,y
         else:
             # Some preprocessing
