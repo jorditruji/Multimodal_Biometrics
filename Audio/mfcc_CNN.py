@@ -255,7 +255,7 @@ class DeepSpeakerModel(nn.Module):
             self.model.fc = nn.Linear(512*4, self.embedding_size)
         elif feature_dim == 40:
             self.model.fc = nn.Linear(256 * 5, self.embedding_size)
-        self.model.classifier = mm.Sequential(
+        self.model.classifier = nn.Sequential(
             nn.Linear(self.embedding_size, 1024),
             nn.ReLU(),
             nn.Dropout(),
