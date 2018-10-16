@@ -56,10 +56,12 @@ class MFCCExtractor(object):
         # Mean & variance normalization
         if feature.shape[0] > 1:
             mu = mean(feature, axis=0)
-            print "mean: ", mu
+            #print "mean: ", mu
             sigma = std(feature, axis=0)
-            print "std: ", sigma
+            #print "std: ", sigma
             feature = (feature - mu) / sigma
+            print "abs: ", max(feature,axis=0)-min(feature,axis=0)
+            print "max: ", max(feature,axis=0)
 
         return feature
 
