@@ -45,12 +45,10 @@ class MFCCExtractor(object):
             frame[1:] -= frame[:-1] * 0.95
             # Power spectrum
             X = abs(fft.fft(frame, self.FFT_SIZE)[:self.FFT_SIZE / 2 + 1]) ** 2
-            print min(X)
             X[X < POWER_SPECTRUM_FLOOR] = POWER_SPECTRUM_FLOOR  # Avoid zero
             print X.shape
             # Mel filtering, logarithm, DCT
             X_mel=log(dot(self.M,X))
-            print X_mel.shape
             #X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
         feature = row_stack(feature)
@@ -58,7 +56,9 @@ class MFCCExtractor(object):
         # Mean & variance normalization
         if feature.shape[0] > 1:
             mu = mean(feature, axis=0)
+            print "mean: ", mu
             sigma = std(feature, axis=0)
+            print "std: ", sigma
             feature = (feature - mu) / sigma
 
         return feature
