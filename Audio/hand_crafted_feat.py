@@ -1,4 +1,4 @@
-POWER_SPECTRUM_FLOOR = 1e-100
+POWER_SPECTRUM_FLOOR = 1e-8
 
 from numpy import *
 
