@@ -9,7 +9,7 @@ from torch.optim import lr_scheduler
 import time
 from torchvision import models
 import copy
-from Audio.mfcc_CNN import MiniConvNet, ConvNet, MiniConvNet2, MiniVGG
+from Audio.mfcc_CNN import MiniConvNet, ConvNet, MiniConvNet2, MiniVGG, DeepSpeakerModel
 from Audio.fran import Discriminator
 import string
 import sys
