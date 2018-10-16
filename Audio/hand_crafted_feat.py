@@ -46,7 +46,6 @@ class MFCCExtractor(object):
             # Power spectrum
             X = abs(fft.fft(frame, self.FFT_SIZE)[:self.FFT_SIZE / 2 + 1]) ** 2
             X[X < POWER_SPECTRUM_FLOOR] = POWER_SPECTRUM_FLOOR  # Avoid zero
-            print X.shape
             # Mel filtering, logarithm, DCT
             X_mel=log(dot(self.M,X))
             #X = dot(self.D, log(dot(self.M, X)))
@@ -60,8 +59,8 @@ class MFCCExtractor(object):
             sigma = std(feature, axis=0)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
-            print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
-            print "max: ", amax(feature,axis=0)
+            #print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
+            #print "max: ", amax(feature,axis=0)
 
         return feature
 
