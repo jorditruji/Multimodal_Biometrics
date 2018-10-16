@@ -78,7 +78,6 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			scheduler.step()
 			b = list(model.parameters())[12].clone()
 			print torch.equal(a.data, b.data)
-			print("--- %s seconds for train_batch ---" % (time.time() - start_time))
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
