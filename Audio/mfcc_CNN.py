@@ -250,16 +250,18 @@ class DeepSpeakerModel(nn.Module):
         super(DeepSpeakerModel, self).__init__()
 
         self.embedding_size = embedding_size
-
-
-
-
         self.model = myResNet(BasicBlock, [1, 1, 1, 1])
         if feature_dim == 64:
             self.model.fc = nn.Linear(512*4, self.embedding_size)
         elif feature_dim == 40:
             self.model.fc = nn.Linear(256 * 5, self.embedding_size)
-        self.model.classifier = nn.Linear(self.embedding_size, num_classes)
+        self.model.classifier = mm.Sequential(
+            nn.Linear(self.embedding_size, 1024)
+            nn.ReLU(),
+            nn.Dropout(),
+            nn.Linear(1024, num_classes)
+            nn.Softmax()
+        )
 
 
     def l2_norm(self,input):
@@ -308,7 +310,7 @@ class DeepSpeakerModel(nn.Module):
         #x = x.resize(int(x.size(0) / 17),17 , 512)
         #self.features =torch.mean(x,dim=1)
         #x = self.model.classifier(self.features)
-        return self.features
+        return self.model.classifier(x)
 
     def forward_classifier(self, x):
 		features = self.forward(x)
