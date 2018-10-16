@@ -10,14 +10,14 @@ def hamming(n):
 
 class MFCCExtractor(object):
 
-    def __init__(self, fs, win_length_ms=35, win_shift_ms=10, FFT_SIZE=512, verbose = False):
+    def __init__(self, fs, win_length_ms=35, win_shift_ms=10, FFT_SIZE=512,n_bands=256, verbose = False):
         self.fs = fs
         self.FFT_SIZE = FFT_SIZE
         self.FRAME_LEN = int(float(win_length_ms) / 1000 * fs)
         self.FRAME_SHIFT = int(float(win_shift_ms) / 1000 * fs)
         self.window = hamming(self.FRAME_LEN)
         self.M, self.CF = self._mel_filterbank()
-        
+        self.n_bands = n_bands
     def pre_emphasize(self, x, coef=0.95):
         '''x_emphazied[n]=x[n]- coef*x[n-1]'''
         if coef <= 0:
