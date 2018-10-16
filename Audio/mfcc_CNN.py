@@ -296,8 +296,8 @@ class DeepSpeakerModel(nn.Module):
         return self.features
 
     def forward_classifier(self, x):
-        features = self.forward(x)
-        res = self.model.classifier(features)
+		features = self.forward(x)
+		res = self.model.classifier(features)
 		return res
 
 class myResNet(nn.Module):
