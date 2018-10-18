@@ -37,8 +37,8 @@ class MiniVGG(nn.Module):
 			nn.Linear(1024,1024),
 			nn.ReLU(),
 			nn.Dropout(),
-			nn.Linear(1024,num_classes),
-			torch.nn.Softmax())
+			nn.Linear(1024,num_classes))
+			#torch.nn.Softmax())
 
 	def forward(self, x):
 		out = self.conv1(x)
