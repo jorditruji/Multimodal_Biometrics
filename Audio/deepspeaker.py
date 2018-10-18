@@ -109,8 +109,8 @@ class myResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3])
 
         
-        self.avgpool = nn.AdaptiveAvgPool2d((1))
-        self.fc = nn.Linear(512 * block.expansion, num_classes)
+        self.avgpool = nn.AdaptiveAvgPool2d((512*4))
+        self.fc = nn.Linear(512 , num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -213,7 +213,7 @@ class DeepSpeakerModel(nn.Module):
         #x = x.resize(int(x.size(0) / 17),17 , 512)
         #self.features =torch.mean(x,dim=1)
         #x = self.model.classifier(self.features)
-        return self.features
+        return self.forward_classifier(self.features)
 
     def forward_classifier(self, x):
         features = self.forward(x)
