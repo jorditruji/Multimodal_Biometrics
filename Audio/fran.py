@@ -600,8 +600,7 @@ class Discriminator(Model):
     def forward(self, x):
         #print("Input: {}".format(x.data.shape))
         h = x
-        print "input"
-        print h.size()
+
         # store intermediate activations
         int_act = {}
         for ii, layer in enumerate(self.disc):
