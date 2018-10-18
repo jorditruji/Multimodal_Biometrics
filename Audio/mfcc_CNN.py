@@ -245,6 +245,7 @@ class ReLU(nn.Hardtanh):
         return self.__class__.__name__ + ' (' \
             + inplace_str + ')'
 
+
 class DeepSpeakerModel(nn.Module):
     def __init__(self,embedding_size=512,num_classes=27,feature_dim = 64):
         super(DeepSpeakerModel, self).__init__()
@@ -259,8 +260,8 @@ class DeepSpeakerModel(nn.Module):
             nn.Linear(self.embedding_size, 1024),
             nn.ReLU(),
             nn.Dropout(),
-            nn.Linear(1024, num_classes),
-            nn.Softmax()
+            nn.Linear(1024, num_classes)
+            #nn.Softmax()
         )
 
 
