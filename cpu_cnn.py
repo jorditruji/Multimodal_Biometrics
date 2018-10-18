@@ -73,7 +73,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			a = list(model.parameters())[12].clone()
 
 			loss.backward()
-			for p,n in enumerate(model.parameters()):
+			for n,p in enumerate(model.parameters()):
 				print n,p.grad
 
 			optimizer.step()
