@@ -154,7 +154,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 print device
 
 # Parameters
-params = {'batch_size': 128,
+params = {'batch_size': 75,
           'shuffle': True,
           'num_workers': 6}
 
