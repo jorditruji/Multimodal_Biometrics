@@ -10,7 +10,7 @@ def hamming(n):
 
 class MFCCExtractor(object):
 
-    def __init__(self, fs, win_length_ms=35, win_shift_ms=10, FFT_SIZE=512, n_bands=256, verbose = False):
+    def __init__(self, fs, win_length_ms=25, win_shift_ms=10, FFT_SIZE=512, n_bands=256, verbose = False):
         self.fs = fs
         self.FFT_SIZE = FFT_SIZE
         self.FRAME_LEN = int(float(win_length_ms) / 1000 * fs)
@@ -42,14 +42,14 @@ class MFCCExtractor(object):
             frame = signal[f * self.FRAME_SHIFT : f * self.FRAME_SHIFT +
                            self.FRAME_LEN] * self.window
             # Pre-emphasis
-            frame[1:] -= frame[:-1] * 0.95
+            #frame[1:] -= frame[:-1] * 0.95
             # Power spectrum
             X = abs(fft.fft(frame, self.FFT_SIZE)[:self.FFT_SIZE / 2 + 1]) ** 2
             # Mel filtering, logarithm, DCT
             #X_mel=dot(self.M,X)
-            X[X < POWER_SPECTRUM_FLOOR] = POWER_SPECTRUM_FLOOR  # Avoid zero
+            #X[X < POWER_SPECTRUM_FLOOR] = POWER_SPECTRUM_FLOOR  # Avoid zero
 
-            X_mel=log(X)
+            #X_mel=log(X)
             #X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
         feature = row_stack(feature)
