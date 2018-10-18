@@ -109,7 +109,7 @@ class myResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3])
 
         
-        self.avgpool = nn.AdaptiveAvgPool2d((1,None))
+        self.avgpool = nn.AdaptiveAvgPool2d((1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
