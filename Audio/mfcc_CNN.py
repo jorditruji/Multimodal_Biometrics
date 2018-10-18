@@ -30,8 +30,17 @@ class MiniVGG(nn.Module):
 			nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
 			nn.BatchNorm2d(128),
 			nn.ReLU(),
-			nn.AvgPool2d(kernel_size=6, stride=6)
+			nn.MaxPool2d(kernel_size=4, stride=4)
 		)
+        self.conv4 = nn.Sequential(
+            nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=4, stride=4)
+        )
 		self.fc = nn.Sequential(
 			#nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
 			nn.Linear(1024,1024),
