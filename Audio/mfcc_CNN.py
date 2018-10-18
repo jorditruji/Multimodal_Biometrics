@@ -39,7 +39,7 @@ class MiniVGG(nn.Module):
             nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(256),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=4, stride=4)
+            nn.AvgPool2d(kernel_size=6, stride=6)
         )
         self.fc = nn.Sequential(
         #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
