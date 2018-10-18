@@ -49,7 +49,7 @@ class MFCCExtractor(object):
             #X_mel=dot(self.M,X)
             X[X < POWER_SPECTRUM_FLOOR] = POWER_SPECTRUM_FLOOR  # Avoid zero
 
-            X_mel=log(X_mel)
+            X_mel=log(X)
             #X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
         feature = row_stack(feature)
