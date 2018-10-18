@@ -41,13 +41,13 @@ class MiniVGG(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=4, stride=4)
         )
-		self.fc = nn.Sequential(
-			#nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
-			nn.Linear(1024,1024),
-			nn.ReLU(),
-			nn.Dropout(),
-			nn.Linear(1024,num_classes))
-			#torch.nn.Softmax())
+        self.fc = nn.Sequential(
+            #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
+            nn.Linear(1024,1024),
+            nn.ReLU(),
+            nn.Dropout(),
+            nn.Linear(1024,num_classes))
+            #torch.nn.Softmax())
 
 	def forward(self, x):
 		out = self.conv1(x)
