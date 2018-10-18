@@ -567,7 +567,7 @@ class Discriminator(Model):
                     nn.ReLU(inplace=True),
                     nn.Linear(256, 128),
                     nn.ReLU(inplace=True),
-                    nn.Linear(128, 128)
+                    nn.Linear(128, 27)
                 )
             else:
                 self.fc = nn.Sequential(
@@ -626,17 +626,14 @@ class Discriminator(Model):
             h = h.view(h.size(0), -1)
             int_act['avg_conv_h'] = h
         elif self.pool_type == 'none':
-            print "shape before reshape "
-            print h.size()
-            h = h.view(h.size(0), -1)
-            print "shape after reshape "
 
-            print h.size()
+            h = h.view(h.size(0), -1)
+
         #print("Final h: {}".format(h.data.shape))
         #print(type(h.data))
         y = self.fc(h)
         #print(type(y.data))
-        y=self.classifier(y)
+        #y=self.classifier(y)
         int_act['logit'] = y
         # return F.sigmoid(y), int_act
 
