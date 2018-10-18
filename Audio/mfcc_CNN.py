@@ -3,35 +3,35 @@ import torch.nn as nn
 import math
 
 class MiniVGG(nn.Module):
-	def __init__(self, num_classes=27):
-		super(MiniVGG,self).__init__()
-		self.conv1 = nn.Sequential(
-			nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
-			nn.BatchNorm2d(32),
-			nn.ReLU(),
-			nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1),
-			nn.BatchNorm2d(32),
-			nn.ReLU(),
-			nn.MaxPool2d(kernel_size=4, stride=4)
-		)
-		self.conv2 = nn.Sequential(
-			nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
-			nn.BatchNorm2d(64),
-			nn.ReLU(),
-			nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
-			nn.BatchNorm2d(64),
-			nn.ReLU(),
-			nn.MaxPool2d(kernel_size=4, stride=4)
-		)
-		self.conv3 = nn.Sequential(
-			nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),
-			nn.BatchNorm2d(128),
-			nn.ReLU(),
-			nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
-			nn.BatchNorm2d(128),
-			nn.ReLU(),
-			nn.MaxPool2d(kernel_size=4, stride=4)
-		)
+    def __init__(self, num_classes=27):
+        super(MiniVGG,self).__init__()
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=4, stride=4)
+        )
+            self.conv2 = nn.Sequential(
+            nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=4, stride=4)
+        )
+        self.conv3 = nn.Sequential(
+            nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=4, stride=4)
+        )
         self.conv4 = nn.Sequential(
             nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(128),
@@ -42,20 +42,19 @@ class MiniVGG(nn.Module):
             nn.MaxPool2d(kernel_size=4, stride=4)
         )
         self.fc = nn.Sequential(
-            #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
+        #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
             nn.Linear(1024,1024),
             nn.ReLU(),
             nn.Dropout(),
             nn.Linear(1024,num_classes))
-            #torch.nn.Softmax())
 
-	def forward(self, x):
-		out = self.conv1(x)
-		out = self.conv2(out)
-		out = self.conv3(out)
-		out = out.reshape(out.size(0), -1)
-		out = self.fc(out)
-		return out
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.conv2(out)
+        out = self.conv3(out)
+        out = out.reshape(out.size(0), -1)
+        out = self.fc(out)
+        return out
 
 
 # Convolutional neural network (two convolutional layers)
