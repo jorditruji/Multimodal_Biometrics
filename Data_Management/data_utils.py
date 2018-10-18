@@ -42,7 +42,7 @@ def path_img2wav(path):
 	proc=str(filter(lambda x: x in printable, proc).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
 	return proc
 
-def filter_dataset_by_classes(data, labels, min_samples=300, limit=True):
+def filter_dataset_by_classes(data, labels, min_samples=300, limit=False):
 	'''Returns the dataset only with the classes that have at least min_samples'''
 	classes=[]
 	count=[]
@@ -85,7 +85,6 @@ def load_partitions():
 	#Loaddddddd
 	return np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/partition.npy').item(), np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/labels.npy').item()
 
-'''
 data,labels=read_pkl('faces2.pkl')
 data,labels=filter_dataset_by_classes(data,labels, min_samples=300)
 
@@ -118,4 +117,3 @@ print(partition[key] for key in partition.keys())
 
 
 #X_dataset=np.concatenate((x_train,y_train),axis=1)
-'''
