@@ -85,6 +85,7 @@ def load_partitions():
 	#Loaddddddd
 	return np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/partition.npy').item(), np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/labels.npy').item()
 
+'''
 data,labels=read_pkl('faces2.pkl')
 data,labels=filter_dataset_by_classes(data,labels, min_samples=300)
 
@@ -117,3 +118,4 @@ print(partition[key] for key in partition.keys())
 
 
 #X_dataset=np.concatenate((x_train,y_train),axis=1)
+'''
