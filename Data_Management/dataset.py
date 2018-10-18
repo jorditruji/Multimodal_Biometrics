@@ -28,7 +28,7 @@ class Dataset(data.Dataset):
     def __init__(self, list_IDs, labels):
         self.labels = labels
         self.list_IDs = list_IDs
-        self.mfcc = True
+        self.mfcc = False
         self.preprocessing=False
         self.forbidden=list(np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy'))
         print "Corrupted files to avoid: {}".format(str(len(self.forbidden)))
@@ -81,7 +81,7 @@ class Dataset(data.Dataset):
         else:
             # Some preprocessing
             #if self.preprocessing:
-            wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
+            #wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
             wav_data = self.pre_emphasize(wav_data)            
 
         return wav_data, y
