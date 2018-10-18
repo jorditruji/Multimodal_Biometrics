@@ -73,7 +73,9 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			a = list(model.parameters())[12].clone()
 
 			loss.backward()
-
+			for p,n in zip(model.parameters(),model._all_weights[0]):
+				if n[:6] == 'weight':
+				print('===========\ngradient:{}\n----------\n{}'.format(n,p.grad))
 			optimizer.step()
 			scheduler.step()
 			b = list(model.parameters())[12].clone()
