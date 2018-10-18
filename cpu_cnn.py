@@ -74,8 +74,8 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 			loss.backward()
 			for p,n in enumerate(model.parameters()):
-				if n[:6] == 'weight':
-					print n,p
+				print n,p
+			
 			optimizer.step()
 			scheduler.step()
 			b = list(model.parameters())[12].clone()
