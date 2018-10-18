@@ -555,8 +555,8 @@ class Discriminator(Model):
             nn.Linear(128,1024),
             nn.ReLU(),
             nn.Dropout(),
-            nn.Linear(1024,27),
-            nn.Softmax()
+            nn.Linear(1024,27)
+            #nn.Softmax()
             )
         if pool_type == 'none':
             # resize tensor to fit into FC directly
