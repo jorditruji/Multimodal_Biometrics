@@ -45,15 +45,16 @@ class MiniVGG(nn.Module):
         )
         self.fc = nn.Sequential(
         #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
-            nn.Linear(1024,1024),
+            nn.Linear(128,2048),
             nn.ReLU(),
             nn.Dropout(),
-            nn.Linear(1024,num_classes))
+            nn.Linear(2048,num_classes))
 
     def forward(self, x):
         out = self.conv1(x)
         out = self.conv2(out)
         out = self.conv3(out)
+        out = self.conv4(out)
         out = out.reshape(out.size(0), -1)
         out = self.fc(out)
         return out
