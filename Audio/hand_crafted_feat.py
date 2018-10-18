@@ -53,6 +53,7 @@ class MFCCExtractor(object):
             #X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
         feature = row_stack(feature)
+        return feature
         # Show the MFCC spectrum before normalization
         # Mean & variance normalization
         if feature.shape[0] > 1:
