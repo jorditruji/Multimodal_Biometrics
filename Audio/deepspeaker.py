@@ -157,6 +157,79 @@ class DeepSpeakerModel(nn.Module):
         super(DeepSpeakerModel, self).__init__()
 
         self.embedding_size = embedding_size
+        self.model = myResNet(BasicBlock, [1, 1, 0, 0])
+        if feature_dim == 64:
+            self.model.fc = nn.Linear(512*4, self.embedding_size)
+        elif feature_dim == 40:
+            self.model.fc = nn.Linear(256 * 5, self.embedding_size)
+        self.model.classifier = nn.Linear(self.embedding_size, num_classes)
+
+
+
+
+    def l2_norm(self,input):
+        input_size = input.size()
+        buffer = torch.pow(input, 2)
+
+        normp = torch.sum(buffer, 1).add_(1e-10)
+        norm = torch.sqrt(normp)
+
+        _output = torch.div(input, norm.view(-1, 1).expand_as(input))
+
+        output = _output.view(input_size)
+
+        return output
+
+    def forward(self, x):
+
+        x = self.model.conv1(x)
+        x = self.model.bn1(x)
+        x = self.model.relu(x)
+        x = self.model.layer1(x)
+
+        x = self.model.conv2(x)
+        x = self.model.bn2(x)
+        x = self.model.relu(x)
+        x = self.model.layer2(x)
+
+        x = self.model.conv3(x)
+        x = self.model.bn3(x)
+        x = self.model.relu(x)
+        x = self.model.layer3(x)
+
+        x = self.model.conv4(x)
+        x = self.model.bn4(x)
+        x = self.model.relu(x)
+        x = self.model.layer4(x)
+        print x.size()
+        x = self.model.avgpool(x)
+        x = x.view(x.size(0), -1)
+        x = self.model.fc(x)
+        self.features = self.l2_norm(x)
+        # Multiply by alpha = 10 as suggested in https://arxiv.org/pdf/1703.09507.pdf
+        alpha=10
+        self.features = self.features*alpha
+
+        #x = x.resize(int(x.size(0) / 17),17 , 512)
+        #self.features =torch.mean(x,dim=1)
+        #x = self.model.classifier(self.features)
+        return self.forward_classifier(self.features)
+
+    def forward_classifier(self, x):
+        features = self.forward(x)
+        res = self.model.classifier(features)
+        return res
+
+
+
+
+
+
+class DeepSpeakerModelV2(nn.Module):
+    def __init__(self,embedding_size=512,num_classes=27,feature_dim = 64):
+        super(DeepSpeakerModel, self).__init__()
+
+        self.embedding_size = embedding_size
         self.model = myResNet(BasicBlock, [1, 1, 1, 1])
         if feature_dim == 64:
             self.model.fc = nn.Linear(512*4, self.embedding_size)

@@ -42,11 +42,12 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 
 	model = model.to(device)
 	max_epochs=50
-	model.train()
+	
 	#Loop over epochs
 	for epoch in range(max_epochs):
 		print('Epoch {}/{}'.format(epoch, num_epochs - 1))
 		# Training
+		model.train()
 		dataseize=0
 		cont=0
 		running_loss = 0.0
@@ -74,11 +75,11 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			a = list(model.parameters())[12].clone()
 
 			loss.backward()
-			'''
+			
 			for name, param in model.named_parameters():
 				if param.requires_grad:
 					print name, param.data
-			'''
+			
 			optimizer.step()
 			scheduler.step()
 			b = list(model.parameters())[12].clone()
@@ -155,7 +156,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 print device
 
 # Parameters
-params = {'batch_size': 16,
+params = {'batch_size': 128,
           'shuffle': True,
           'num_workers': 6}
 
@@ -173,7 +174,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
 
-model_ft = DeepSpeakerModel()#MiniVGG()
+model_ft = MiniVGG()#MiniVGG()
 
 model_ft = model_ft.to(device)
 
@@ -181,7 +182,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.Adam(model_ft.parameters(),lr=1e-2, weight_decay=5e-5)#  L2 regularization
+optimizer_ft = optim.Adam(model_ft.parameters(),lr=1e-3, weight_decay=5e-5)#  L2 regularization
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=5, gamma=0.1)
 model_ft = train_model(model_ft, criterion, optimizer_ft,exp_lr_scheduler, num_epochs=50)

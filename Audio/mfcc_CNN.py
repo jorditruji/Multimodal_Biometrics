@@ -244,6 +244,8 @@ class BasicBlock(nn.Module):
 		out = self.relu(out)
 
 		return out
+
+
 class ReLU(nn.Hardtanh):
 
     def __init__(self, inplace=False):

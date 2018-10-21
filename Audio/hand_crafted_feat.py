@@ -42,7 +42,7 @@ class MFCCExtractor(object):
             frame = signal[f * self.FRAME_SHIFT : f * self.FRAME_SHIFT +
                            self.FRAME_LEN] * self.window
             # Pre-emphasis
-            #frame[1:] -= frame[:-1] * 0.95
+            frame[1:] -= frame[:-1] * 0.95
             # Power spectrum
             X = abs(fft.fft(frame, self.FFT_SIZE)[:self.FFT_SIZE / 2 + 1]) ** 2
             # Mel filtering, logarithm, DCT
@@ -52,8 +52,8 @@ class MFCCExtractor(object):
             #X_mel=log(X)
             #X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
-        feature = row_stack(feature)
-        return feature
+        feature = array(feature)
+
         # Show the MFCC spectrum before normalization
         # Mean & variance normalization
         if feature.shape[0] > 1:
@@ -62,8 +62,8 @@ class MFCCExtractor(object):
             sigma = std(feature, axis=0)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
-            #print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
-            #print "max: ", amax(feature,axis=0)
+            print "min: ", amin(feature,axis=0)
+            print "max: ", amax(feature,axis=0)
 
         return feature
 
