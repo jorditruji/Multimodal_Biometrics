@@ -10,7 +10,7 @@ def hamming(n):
 
 class MFCCExtractor(object):
 
-    def __init__(self, fs, win_length_ms=25, win_shift_ms=10, FFT_SIZE=512, n_bands=256, verbose = False):
+    def __init__(self, fs, win_length_ms=25, win_shift_ms=10, FFT_SIZE=256, n_bands=256, verbose = False):
         self.fs = fs
         self.FFT_SIZE = FFT_SIZE
         self.FRAME_LEN = int(float(win_length_ms) / 1000 * fs)
@@ -62,8 +62,6 @@ class MFCCExtractor(object):
             sigma = std(feature, axis=0)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
-            print "min: ", amin(feature,axis=0)
-            print "max: ", amax(feature,axis=0)
 
         return feature
 
