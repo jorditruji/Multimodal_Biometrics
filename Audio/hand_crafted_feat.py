@@ -62,7 +62,7 @@ class MFCCExtractor(object):
             sigma = std(feature, axis=0)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
-
+            print feature.shape
         return feature
 
     def _mel_filterbank(self):
