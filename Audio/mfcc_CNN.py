@@ -55,7 +55,6 @@ class MiniVGG(nn.Module):
             nn.Linear(2048,num_classes))
 
     def forward(self, x):
-        print x.size()
         out = self.conv1(x)
         print out.size()
         out = self.conv2(out)
