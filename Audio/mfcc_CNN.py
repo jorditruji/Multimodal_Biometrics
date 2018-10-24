@@ -2,17 +2,19 @@ import torch
 import torch.nn as nn
 import math
 
+
+
 class MiniVGG(nn.Module):
     def __init__(self, num_classes=27):
         super(MiniVGG,self).__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(16),
-            nn.ReLU(),
-            nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2)
+            nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=4, stride=2)
         )
         self.conv2 = nn.Sequential(
             nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1),
@@ -21,8 +23,9 @@ class MiniVGG(nn.Module):
             nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2)
+            nn.MaxPool2d(kernel_size=4, stride=2)
         )
+        '''
         self.conv3 = nn.Sequential(
             nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(64),
@@ -33,7 +36,7 @@ class MiniVGG(nn.Module):
             nn.AvgPool2d(kernel_size=6, stride=6)
             #nn.MaxPool2d(kernel_size=2, stride=2)
         )
-        '''
+        
         self.conv4 = nn.Sequential(
             nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(256),
@@ -52,12 +55,13 @@ class MiniVGG(nn.Module):
             nn.Linear(2048,num_classes))
 
     def forward(self, x):
+        print x.size()
         out = self.conv1(x)
         print out.size()
         out = self.conv2(out)
         print out.size()
-        out = self.conv3(out)
-        print out.size()
+        #out = self.conv3(out)
+        #print out.size()
 
         #out = self.conv4(out)
         out = out.reshape(out.size(0), -1)
