@@ -155,10 +155,10 @@ class Spectrum_Extractor(object):
         #return feature
         if feature.shape[1] > 1 and self.normalize:
             print feature.shape
-            mu = mean(feature, axis=1)
-            print "mean: ", mu.shape
+            mu = mean(feature, axis=1).squeeze()
             sigma = std(feature, axis=1)
-            #print "std: ", sigma
+            print "\n std: ", sigma
+            print "\n mean", mu
             feature = (feature - mu) / sigma
             print "abs: ", amax(feature,axis=1)-amin(feature,axis=1)
             print "max: ", amax(feature,axis=1)
