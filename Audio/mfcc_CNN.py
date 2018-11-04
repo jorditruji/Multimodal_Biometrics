@@ -64,6 +64,7 @@ class MiniVGG(nn.Module):
         #out = self.conv3(out)
         print out.size()
         out = self.conv4(out)
+        print out.size()
         out = out.reshape(out.size(0), -1)
         out = self.fc(out)
         return out
