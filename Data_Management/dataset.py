@@ -30,7 +30,7 @@ class Dataset(data.Dataset):
         self.list_IDs = list_IDs
         self.mfcc = True
         self.preprocessing=False
-        self.forbidden=list(np.load('/work/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy'))
+        self.forbidden=list(np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy'))
         print "Corrupted files to avoid: {}".format(str(len(self.forbidden)))
 
     def __len__(self):
@@ -94,7 +94,7 @@ class Dataset(data.Dataset):
         if imax==0:
             self.forbidden.append(name)
             #Update forbiddens:
-            np.save('/work/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy', self.forbidden, allow_pickle=True, fix_imports=True)
+            np.save('/imatge/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy', self.forbidden, allow_pickle=True, fix_imports=True)
         try:
             x_n = x / imax
             return x_n
