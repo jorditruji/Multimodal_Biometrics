@@ -156,13 +156,13 @@ class Spectrum_Extractor(object):
         if feature.shape[0] > 1 and self.normalize:
             print feature.shape
             mu = mean(feature, axis=0)
-            print "mean: ", mu.shape
+
             sigma = std(feature, axis=0)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
             print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
             print "max: ", amax(feature,axis=0)
-
+            print "dis: ", unique(feature,axis=0).shape
         return transpose(feature)
 
     def _mel_filterbank(self):
