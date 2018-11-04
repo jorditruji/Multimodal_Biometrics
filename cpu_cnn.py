@@ -75,15 +75,15 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			a = list(model.parameters())[12].clone()
 
 			loss.backward()
-			
+			'''
 			for name, param in model.named_parameters():
 				if param.requires_grad:
 					print name, param.data
-			
+			'''
 			optimizer.step()
 			scheduler.step()
 			b = list(model.parameters())[12].clone()
-			print torch.equal(a.data, b.data)
+			#print torch.equal(a.data, b.data)
 			# statistics
 			running_loss += loss.item() * local_batch.size(0)
 			dataseize+= local_batch.size(0)
