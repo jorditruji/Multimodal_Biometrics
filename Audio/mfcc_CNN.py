@@ -52,7 +52,7 @@ class MiniVGG(nn.Module):
         
         self.fc = nn.Sequential(
         #nn.AvgPool2d(kernel_size=7, stride=1, padding=0),
-            nn.Linear(512,2048),
+            nn.Linear(1024,2048),
             nn.ReLU(),
             nn.Dropout(),
             nn.Linear(2048,num_classes))
