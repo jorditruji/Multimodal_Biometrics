@@ -160,9 +160,9 @@ class Spectrum_Extractor(object):
             sigma = std(feature, axis=0)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
-            print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
-            print "max: ", amax(feature,axis=0)
-            print "dis: ", unique(feature,axis=0).shape
+            print "min: ", amin(feature,axis=0)
+            #print "max: ", amax(feature,axis=0)
+            print "dis: ", unique(feature,axis=0)
         return transpose(feature)
 
     def _mel_filterbank(self):
