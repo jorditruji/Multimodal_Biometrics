@@ -149,21 +149,21 @@ class Spectrum_Extractor(object):
                 X_mel=log(X)
                 X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
-        feature = 10*log(transpose(array(feature)))
+        feature = 10*log(array(feature))
         # Mean & variance normalization
 
         #return feature
-        if feature.shape[1] > 1 and self.normalize:
+        if feature.shape[0] > 1 and self.normalize:
             print feature.shape
-            mu = mean(feature, axis=1).squeeze()
-            sigma = std(feature, axis=1).squeeze()
-            print "\n std: ", sigma
-            print "\n mean", mu
+            mu = mean(feature, axis=0)
+            print "mean: ", mu.shape
+            sigma = std(feature, axis=0)
+            #print "std: ", sigma
             feature = (feature - mu) / sigma
-            print "abs: ", amax(feature,axis=1)-amin(feature,axis=1)
-            print "max: ", amax(feature,axis=1)
+            print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
+            print "max: ", amax(feature,axis=0)
 
-        return feature
+        return transpose(feature)
 
     def _mel_filterbank(self):
         """
