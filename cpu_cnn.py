@@ -156,9 +156,9 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 print device
 
 # Parameters
-params = {'batch_size': 128,
+params = {'batch_size': 64,
           'shuffle': True,
-          'num_workers': 6}
+          'num_workers': 8}
 
 
 partition,labels=load_partitions()
