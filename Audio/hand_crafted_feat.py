@@ -90,7 +90,7 @@ class MFCCExtractor(object):
             M[r, c+1] += 2 * pm[c]
         return M, CF
 
-POWER_SPECTRUM_FLOOR = 1e-3
+POWER_SPECTRUM_FLOOR = 1e-6
 
 from numpy import *
 
@@ -131,7 +131,6 @@ class Spectrum_Extractor(object):
         if signal.ndim > 1:
             print "INFO: Input signal has more than 1 channel; the channels will be averaged."
             signal = mean(signal, axis=1)
-        print signal.shape
         frames = (len(signal) - self.FRAME_LEN) / self.FRAME_SHIFT + 1
         feature = []
         for f in xrange(frames):
@@ -150,20 +149,19 @@ class Spectrum_Extractor(object):
                 X_mel=log(X)
                 X = dot(self.D, log(dot(self.M, X)))
             feature.append(X)
-        feature = array(feature)
+        feature = 10*log(transpose(array(feature)))
         # Mean & variance normalization
 
         #return feature
-        if feature.shape[0] > 1 and self.normalize:
+        if feature.shape[1] > 1 and self.normalize:
             print feature.shape
-            mu = mean(feature, axis=0)
+            mu = mean(feature, axis=1)
             print "mean: ", mu.shape
-            sigma = std(feature, axis=0)
+            sigma = std(feature, axis=1)
             #print "std: ", sigma
             feature = (feature - mu) / sigma
-            print "normalize"
-            #print "abs: ", amax(feature,axis=0)-amin(feature,axis=0)
-            #print "max: ", amax(feature,axis=0)
+            print "abs: ", amax(feature,axis=1)-amin(feature,axis=1)
+            print "max: ", amax(feature,axis=1)
 
         return feature
 
