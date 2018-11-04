@@ -70,7 +70,7 @@ class Dataset(data.Dataset):
         wav_data = self.abs_normalize_wave_minmax(wav_data,ID)
         #MFCC extraction
         if self.mfcc:
-            feat_ex= MFCCExtractor(fm)
+            feat_ex= Spectrum_Extractor(fm)
             #Pxx, freqs, bins, im = plt.specgram(wav_data, NFFT=256, Fs=16000, noverlap=240)
             spectogram=feat_ex.extract(wav_data)
             #spectogram= np.array(Pxx,dtype=float)
