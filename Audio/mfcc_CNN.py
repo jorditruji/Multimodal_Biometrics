@@ -60,6 +60,7 @@ class MiniVGG(nn.Module):
         print out.size()
         out = self.conv2(out)
         print out.size()
+        out=self.conv3(out)
         #out = self.conv3(out)
         #print out.size()
         #out = self.conv4(out)
