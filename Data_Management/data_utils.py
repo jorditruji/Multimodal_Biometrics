@@ -42,7 +42,7 @@ def path_img2wav(path):
 	proc=str(filter(lambda x: x in printable, proc).replace('youtubers_audios_audios', 'youtubers_videos_audios').replace('.png', '.wav'))
 	return proc
 
-def filter_dataset_by_classes(data, labels, min_samples=300, limit=False):
+def filter_dataset_by_classes(data, labels, min_samples=1000, limit=False):
 	'''Returns the dataset only with the classes that have at least min_samples'''
 	classes=[]
 	count=[]
@@ -86,7 +86,6 @@ def load_partitions():
 	return np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/partition.npy').item(), np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/labels.npy').item()
 
 
-'''
 data,labels=read_pkl('faces2.pkl')
 data,labels=filter_dataset_by_classes(data,labels, min_samples=300)
 
@@ -100,7 +99,6 @@ nelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40225.
 dict_labels={}
 for label,path in zip(labels,data):
 	dict_labels[path]=label
-	print path
 
 np.save('labels',dict_labels,allow_pickle=True, fix_imports=True)
 #Split dataset
@@ -119,4 +117,3 @@ print(partition[key] for key in partition.keys())
 
 
 #X_dataset=np.concatenate((x_train,y_train),axis=1)
-'''
