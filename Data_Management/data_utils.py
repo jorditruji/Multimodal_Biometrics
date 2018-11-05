@@ -87,7 +87,7 @@ def load_partitions():
 
 
 data,labels=read_pkl('faces2.pkl')
-data,labels=filter_dataset_by_classes(data,labels, min_samples=300)
+data,labels=filter_dataset_by_classes(data,labels, min_samples=1000)
 
 #Encode labels:
 label_encoder = preprocessing.LabelEncoder()
@@ -111,9 +111,9 @@ labels={}
 partition['train']=x_train
 partition['validation']=x_val
 partition['test']=x_test
-print(partition)
+
 np.save('partition',partition,allow_pickle=True, fix_imports=True)
-print(partition[key] for key in partition.keys())
+
 
 
 #X_dataset=np.concatenate((x_train,y_train),axis=1)
