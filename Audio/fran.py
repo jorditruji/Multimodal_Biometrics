@@ -575,7 +575,7 @@ class Discriminator(Model):
                     nn.PReLU(256),
                     nn.Linear(256, 128),
                     nn.PReLU(128),
-                    nn.Linear(128, 128)
+                    nn.Linear(128, 27)
                 )
         elif pool_type == 'rnn':
             if bnorm:

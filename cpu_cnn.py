@@ -173,7 +173,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
-model = Discriminator(1, d_fmaps, 15, nn.LeakyReLU(0.3))
+model_ft = Discriminator(1, d_fmaps, 15, nn.LeakyReLU(0.3))
 
 
 model_ft = model_ft.to(device)
