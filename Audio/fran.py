@@ -594,7 +594,12 @@ class Discriminator(Model):
         outs = 1
         if num_spks is not None:
             outs += num_spks
-
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d) or isinstance(m, nn.Conv1d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+nn.init.constant_(m.bias, 0)
         #self.load_pretrained('weights_EOE_G-Generator1D-61101.ckpt', load_last=True)
 
     def forward(self, x):
