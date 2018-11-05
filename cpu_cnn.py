@@ -68,6 +68,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			outputs = model(local_batch)
 			_, preds = torch.max(outputs, 1)
 			print "batch predictions: {} \n".format(preds)
+			print "batch labels: {} \n".format(local_labels)
 			loss = criterion(outputs, local_labels)
 
 
