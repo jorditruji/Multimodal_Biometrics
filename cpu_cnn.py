@@ -180,7 +180,7 @@ model_ft = model_ft.to(device)
 
 criterion = nn.CrossEntropyLoss()
 
-get_n_params(model_ft)
+print get_n_params(model_ft)
 # Observe that all parameters are being optimized
 optimizer_ft = optim.Adam(model_ft.parameters(),lr=1e-4, weight_decay=5e-5)#  L2 regularization
 # Decay LR by a factor of 0.1 every 10 epochs
