@@ -67,6 +67,7 @@ def train_model(model, criterion, optimizer,scheduler, num_epochs=25):
 			local_batch=local_batch.type(torch.cuda.FloatTensor)
 			outputs = model(local_batch)
 			_, preds = torch.max(outputs, 1)
+			print "batch predictions: {} \n".format(preds)
 			loss = criterion(outputs, local_labels)
 
 
