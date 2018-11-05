@@ -606,7 +606,7 @@ class Discriminator(Model):
         for ii, layer in enumerate(self.disc):
             #print(ii)
             h, _ = layer(h)
-            #print("After layer: {}".format(h.data.shape))
+            print("After layer: {}".format(h.data.shape))
             int_act['h_{}'.format(ii)] = h
 
         if self.pool_type == 'rnn':
@@ -628,7 +628,7 @@ class Discriminator(Model):
 
             h = h.view(h.size(0), -1)
 
-        #print("Final h: {}".format(h.data.shape))
+        print("Final h: {}".format(h.data.shape))
         #print(type(h.data))
         y = self.fc(h)
         #print(type(y.data))
