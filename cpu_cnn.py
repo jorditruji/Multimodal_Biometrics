@@ -173,8 +173,8 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 d_fmaps = [16, 32, 128, 256, 512, 1024]
+model = Discriminator(1, d_fmaps, 15, nn.LeakyReLU(0.3))
 
-model_ft = MiniVGG()#MiniVGG()
 
 model_ft = model_ft.to(device)
 
@@ -183,7 +183,7 @@ criterion = nn.CrossEntropyLoss()
 get_n_params(model_ft)
 # Observe that all parameters are being optimized
 optimizer_ft = optim.Adam(model_ft.parameters(),lr=1e-4, weight_decay=5e-5)#  L2 regularization
-# Decay LR by a factor of 0.1 every 7 epochs
+# Decay LR by a factor of 0.1 every 10 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=10, gamma=0.1)
 model_ft = train_model(model_ft, criterion, optimizer_ft,exp_lr_scheduler, num_epochs=50)
 

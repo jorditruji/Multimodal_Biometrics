@@ -636,7 +636,7 @@ class Discriminator(Model):
         int_act['logit'] = y
         # return F.sigmoid(y), int_act
 
-        return y, int_act
+        return y#, int_act
 
 
 class Generator(Model):

@@ -28,8 +28,8 @@ class Dataset(data.Dataset):
     def __init__(self, list_IDs, labels):
         self.labels = labels
         self.list_IDs = list_IDs
-        self.mfcc = True
-        self.preprocessing=False
+        self.mfcc = False
+        self.preprocessing=True
         self.forbidden=list(np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy'))
         print "Corrupted files to avoid: {}".format(str(len(self.forbidden)))
 

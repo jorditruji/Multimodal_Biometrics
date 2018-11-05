@@ -171,7 +171,8 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 
 
-model = MiniConvNet2(num_classes=27).to(device)
+d_fmaps = [16, 32, 128, 256, 512, 1024]
+model = Discriminator(1, d_fmaps, 15, nn.LeakyReLU(0.3))
 
 model_ft = model.to(device)
 
