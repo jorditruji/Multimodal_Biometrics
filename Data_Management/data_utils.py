@@ -85,7 +85,7 @@ def load_partitions():
 	#Loaddddddd
 	return np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/partition.npy').item(), np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/labels.npy').item()
 
-
+'''
 data,labels=read_pkl('faces2.pkl')
 data,labels=filter_dataset_by_classes(data,labels, min_samples=1000)
 
@@ -93,14 +93,14 @@ data,labels=filter_dataset_by_classes(data,labels, min_samples=1000)
 label_encoder = preprocessing.LabelEncoder()
 labels=label_encoder.fit_transform(labels)
 
-data=[path_img2wav(path) for path in data if path!='/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoe\
+data=[path for path in data if path!='/imatge/froldan/work/youtubers_videos_audios/SoyUnaPringada/audio/Elanoenelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_frames/Elanoe\
 nelquecasinomequisesuicidar-SoyUnaPringada-MUKv8poAhbA_preprocessed_frame_40225.wav']
 
 dict_labels={}
 for label,path in zip(labels,data):
 	dict_labels[path]=label
 
-np.save('labels',dict_labels,allow_pickle=True, fix_imports=True)
+np.save('labels_img',dict_labels,allow_pickle=True, fix_imports=True)
 #Split dataset
 x_train, y_train, x_val, y_val, x_test, y_test=split_dataset(data,labels)
 
@@ -112,8 +112,9 @@ partition['train']=x_train
 partition['validation']=x_val
 partition['test']=x_test
 
-np.save('partition',partition,allow_pickle=True, fix_imports=True)
+np.save('partition_img',partition,allow_pickle=True, fix_imports=True)
 
 
 
 #X_dataset=np.concatenate((x_train,y_train),axis=1)
+'''
