@@ -9,6 +9,7 @@ from data_utils import path_img2wav
 import numpy as np
 import librosa
 from python_speech_features import mfcc
+from PIL import Image
 from Audio.hand_crafted_feat import MFCCExtractor, Spectrum_Extractor
 import matplotlib as mpl
 mpl.use('Agg')
@@ -28,8 +29,6 @@ class Dataset(data.Dataset):
     def __init__(self, list_IDs, labels):
         self.labels = labels
         self.list_IDs = list_IDs
-        self.mfcc = False
-        self.preprocessing=True
         self.forbidden=list(np.load('/imatge/jmorera/Multimodal_Biometrics/Data_Management/forbidden.npy'))
         print "Corrupted files to avoid: {}".format(str(len(self.forbidden)))
 
@@ -38,13 +37,12 @@ class Dataset(data.Dataset):
         return len(self.list_IDs)
 
 
-
-
     def __getitem__(self, index):
-        'Generates one sample of data'
+        #'Generates one sample of data'
         start_time = time.time()
         # Select sample
         ID = self.list_IDs[index]
+        cropped_face = Image.open(ID.replace('.jpg', '.png'))
+        y=self.labels[ID] 
+        return np.array(cropped_face), y
 
-        #Problems with empty wav files... if we find a forbidden we will get another random sample
-        
